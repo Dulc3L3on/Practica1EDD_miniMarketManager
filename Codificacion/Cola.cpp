@@ -4,7 +4,6 @@
 
 using namespace std;//esta clase la coloqué tal y como se hace con el resto de clases, es decir las no genéricas...
 
-
 //en esta clase solo se requiere emplear los métodos de la lista enlazada, puesto que esta se encarga de hacer los movimientos, las reservaciones de memoria y los respectivos free... aunque en el caso de C++, este ya se encarga de hacer las reservaciones de memoria, a diferencia de su padre C xD
     template <class T>
     Cola<T>::Cola(){

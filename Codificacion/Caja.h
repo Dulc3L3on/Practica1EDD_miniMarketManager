@@ -3,6 +3,8 @@
 #include <string>
 #include "Cliente.h"
 
+using namespace std;  
+
 class Caja{
     private:
         int id;//Que en realidad es el numero de caja
@@ -12,6 +14,7 @@ class Caja{
         Cliente clienteActual;
 
     public: 
+        Caja();
         Caja(int, int);//puesto que cuando se asigne el tiempo, se crerpá a la caja, con el fin de reducir trabajo...
         void agregarCliente(Cliente);//se add el cliente y se hace la asignacion en la var turnosFaltantes para permitir regresar el carrito a su pila..        
         int darCodigo();

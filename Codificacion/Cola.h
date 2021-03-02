@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "listaEnlazada.h"
+#include "listaEnlazada.cpp"
 
 using namespace std;
 

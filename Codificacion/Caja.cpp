@@ -1,8 +1,12 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
-#include "Caja.h"  
-  
+#include "Caja.h" 
+
+using namespace std;  
+
+    Caja::Caja(){}
+
     Caja::Caja(int elId, int elTiempoServicio){
         id = elId;
         tiempoServicio = elTiempoServicio;      

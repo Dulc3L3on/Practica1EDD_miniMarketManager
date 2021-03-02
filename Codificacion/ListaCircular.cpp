@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
-#include "NodoDoble.h"
+#include "NodoDoble.cpp"
 
 using namespace std;
 
@@ -25,8 +25,8 @@ class ListaCircular{//lista xD creo jajaja xD, BIEN YA xD
         void limpiarLista();
         int darTamanio();
         bool estaVacia();
-        NodoDoble<T> darPrimerNodo();
-        NodoDoble<T> darUltimoNodo();
+        NodoDoble<T>* darPrimerNodo();
+        NodoDoble<T>* darUltimoNodo();
 };
 
 
@@ -39,13 +39,13 @@ class ListaCircular{//lista xD creo jajaja xD, BIEN YA xD
 
     template <class T>
     void ListaCircular<T>::anadirAlPrincipio(T elemento){
-         Nodo<T> *nuevoNodo = new Nodo<T>(elemento, primerNodo);//recuerda que en el caso de C++, el new se emplea para cuando se quiere asignar una referencia de un OBJ  a un puntero
+         NodoDoble<T> *nuevoNodo = new NodoDoble<T>(elemento, primerNodo);//recuerda que en el caso de C++, el new se emplea para cuando se quiere asignar una referencia de un OBJ  a un puntero
         //NodoDoble<T> nuevoNodo(elemento, primerNodo);//lo hago así por el hecho de que este es un nodo "contenido" no es en sí con el que se estará navegando,por lo cual no requiere de ser un puntero, sino un nodo normal...       
         if(tamanio>0){            
-            nuevoNodo.obtenerElSiguiente().establecerNodoAnterior(nuevoNodo);//o en otras palabras, se establece el anterior al que antes era el primer nodo...            
+            nuevoNodo->obtenerElSiguiente()->establecerNodoAnterior(nuevoNodo);//o en otras palabras, se establece el anterior al que antes era el primer nodo...            
 
             //esto es para que se de la apariencia de trayectoria circular...
-            nuevoNodo.establecerNodoAnterior(ultimoNodo);
+            nuevoNodo->establecerNodoAnterior(ultimoNodo);
             ultimoNodo->establecerNodoSiguiente(nuevoNodo);
         }//así se establece el nodoAnterior xD
         
@@ -63,9 +63,9 @@ class ListaCircular{//lista xD creo jajaja xD, BIEN YA xD
             ultimoNodo = primerNodo;
             tamanio++;
         }else{
-            NodoDoble<T> *nuevoNodo = new NodoDoble<T>(elemento);            
+            NodoDoble<T> *nuevoNodo = new NodoDoble<T>(elemento, NULL);            
             nuevoNodo->establecerNodoAnterior(ultimoNodo);
-            nuevoNodo->obtenerElAnterior().establecerNodoSiguiente(nuevoNodo);            
+            nuevoNodo->obtenerElAnterior()->establecerNodoSiguiente(nuevoNodo);            
 
             //para formar la trayectoria circular...
             nuevoNodo->establecerNodoSiguiente(primerNodo);
@@ -90,12 +90,12 @@ class ListaCircular{//lista xD creo jajaja xD, BIEN YA xD
     T ListaCircular<T>::darYEliminarPrimerElemento(){
         if(tamanio>0){            
             NodoDoble<T> *nodoAuxiliar = primerNodo;//si debe ser así por el hecho de que puede ser un solo elemento, sino, se provocaría un NULL pointer y otros pasos no tendrían sentido...
-            T contenido = primerNodo.darContenido();
+            T contenido = primerNodo->darContenido();
             delete primerNodo;//se eleiminar el antiguo primer nodo                         
 
             if(tamanio>1){//para asegurar la trayectoria circular...
-                nodoAuxiliar.obtenerElSiguiente()->establecerNodoAnterior(ultimoNodo);                
-                primerNodo = nodoAuxiliar.obtenerElSiguiente();                
+                nodoAuxiliar->obtenerElSiguiente()->establecerNodoAnterior(ultimoNodo);                
+                primerNodo = nodoAuxiliar->obtenerElSiguiente();                
                 ultimoNodo->establecerNodoSiguiente(primerNodo);      
             }else{//es decir es =1
                 delete ultimoNodo;//o en otras palabras, es igual a NULL... [no lo igualo al 1er nodo porque ese ya lo borré entonces no se si es me vaya a dar problemas...]
@@ -119,16 +119,16 @@ class ListaCircular{//lista xD creo jajaja xD, BIEN YA xD
             if(posicion == tamanio){
                 return darYEliminarUltimoElemento();
             }else if(posicion <= tamanio){//puesto que la 1ra es rep por el 1 y no el 0...
-                NodoDoble<T> nodoAuxiliar = primerNodo;
+                NodoDoble<T> *nodoAuxiliar = primerNodo;
 
                 for (int nodoActual = 2; nodoActual < tamanio; nodoActual++)//De esta forma ya no habría necesidad de tener que restarle 1 al valor de la posición al momento de revisar si el nodo actual corresponde a aquel del cual se brindó la posición, porque están en armonía, es decir poseen el mismo valor para un mismo caso...
                 {//debe ser el pto inicial el 2, porque a ese será al que se llegue en la primera vuelta, y debe ser < a tamaño, porque aquí a lo máximo se podrá llegar al penúltimo, puesto que se cuando es el último, se ejecuta el cuerpo de un método diferente...
-                    if(nodoActual == (posicion){
-                        NodoDoble<T> nodoDobleAuxiliar = nodoAuxiliar;//este será útil para hacer los enlaces nuevos que se requieren y el auxiliar para mantener los enlaces antiguos y así reformar correctamente la lista circular luego de eliminarsele un elemento...
-                        contenido = nodoAuxiliar.darContenido();
+                    if(nodoActual == posicion){
+                        NodoDoble<T> *nodoDobleAuxiliar = nodoAuxiliar;//este será útil para hacer los enlaces nuevos que se requieren y el auxiliar para mantener los enlaces antiguos y así reformar correctamente la lista circular luego de eliminarsele un elemento...
+                        contenido = nodoAuxiliar->darContenido();
 
-                        nodoDobleAuxiliar.obtenerElAnterior().establecerNodoSiguiente(nodoAuxiliar.obtenerElSiguiente());//puede hacerse esto sin necesidad de revisar condiciones, por el hecho de que se sabe que se está en un caso perfecto, es decir en uno en el que no hace falta ni el anterior ni el siguiente[es decir no son NULL] al nodo que se va a eliminar...xD
-                        nodoDobleAuxiliar.obtenerElSiguiente().establecerNodoAnterior(nodoAuxiliar.obtenerElAnterior());
+                        nodoDobleAuxiliar->obtenerElAnterior()->establecerNodoSiguiente(nodoAuxiliar->obtenerElSiguiente());//puede hacerse esto sin necesidad de revisar condiciones, por el hecho de que se sabe que se está en un caso perfecto, es decir en uno en el que no hace falta ni el anterior ni el siguiente[es decir no son NULL] al nodo que se va a eliminar...xD
+                        nodoDobleAuxiliar->obtenerElSiguiente()->establecerNodoAnterior(nodoAuxiliar->obtenerElAnterior());
                         delete nodoAuxiliar;                        
 
                         tamanio--;
@@ -143,13 +143,13 @@ class ListaCircular{//lista xD creo jajaja xD, BIEN YA xD
     template <class T>
     T ListaCircular<T>::darYEliminarUltimoElemento(){
         if(tamanio>0){         
-            NodoDoble<T> nodoAuxiliar = ultimoNodo;//todo este cuerpo debe ser así por el hecho de que la lista podría tener 1 solo elemento...
-            T contenido contenido = ultimoNodo.darContenido();
+            NodoDoble<T> *nodoAuxiliar = ultimoNodo;//todo este cuerpo debe ser así por el hecho de que la lista podría tener 1 solo elemento...
+            T contenido = ultimoNodo->darContenido();
             delete ultimoNodo;//se eleiminar el antiguo primer nodo                          
 
             if(tamanio>1){//esto es para asegurar la trayectoria circular...
-                nodoAuxiliar.obtenerElAnterior().establecerNodoSiguiente(primerNodo);
-                ultimoNodo = nodoAuxiliar.obtenerElAnterior();
+                nodoAuxiliar->obtenerElAnterior()->establecerNodoSiguiente(primerNodo);
+                ultimoNodo = nodoAuxiliar->obtenerElAnterior();
                 primerNodo->establecerNodoAnterior(ultimoNodo);                           
             }else{
                 delete primerNodo;//para que quede nuevamente vacía...
@@ -158,17 +158,17 @@ class ListaCircular{//lista xD creo jajaja xD, BIEN YA xD
             tamanio--;
             return contenido;
         }
-        return NULL;
+        return;
     }//puesto que este método es "ensamblado" en un método general, que se encarga del caso en el que el solo exista un elemento, entonces no es necesario colocar el if tam >1 y el else correspondiente, pero se dejarán para asegurar su trabajo individual...
 
     template <class T>
     void ListaCircular<T>::limpiarLista(){//por el hecho de que puede haber más de un nodo, al momento de querer limpiarla, entonces mejor se procederá ha hacer un for
-        NodoDoble* nodoAuxiliar = primerNodo;
+        NodoDoble<T> *nodoAuxiliar = primerNodo;
 
         for (int nodoActual = 2; nodoActual < tamanio; nodoActual++)
         {
             NodoDoble<T> *nodoSubAuxiliar = nodoAuxiliar;//con el fin de no perder la referencia, para así limpiarla...
-            nodoAuxiliar = nodoAuxiliar.obtenerElSiguiente();
+            nodoAuxiliar = nodoAuxiliar->obtenerElSiguiente();
             delete nodoSubAuxiliar;
         }//for por medio del cual liberameos la memoria hasta el penúltimo nodo...                       
 
@@ -191,12 +191,12 @@ class ListaCircular{//lista xD creo jajaja xD, BIEN YA xD
     }
 
     template <class T>
-    NodoDoble<T> ListaCircular<T>::darPrimerNodo(){
+    NodoDoble<T>* ListaCircular<T>::darPrimerNodo(){
         return primerNodo;
     }
 
     template <class T>
-    NodoDoble<T> ListaCircular<T>::darUltimoNodo(){
+    NodoDoble<T>* ListaCircular<T>::darUltimoNodo(){
         return ultimoNodo;
     }
 

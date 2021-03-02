@@ -3,6 +3,7 @@
 #include <string>
 #include "Manager.h"
 
+using namespace std;  
 
     Manager::Manager(){}
   
@@ -46,7 +47,7 @@
         }        
     }//este es para dar las carretas a los clientes, no para colocar el # de carretas solicitadas en la pila...
       
-    void enviarColaPago(ListaCircular<Cliente> clientesEnCompras, Cola<Cliente> colaDePagos){
+    void Manager::enviarColaPago(ListaCircular<Cliente> clientesEnCompras, Cola<Cliente> colaDePagos){
         int numero = rand()%(clientesEnCompras.darTamanio())+1;//De tal forma que tenga oportunidad de sair todos los clientes en una misma ronda, se escoge una cantidad de clientes existentes a sacar... si no hay de todos modos no harbá problema porque tengo una revisión de si ese valor es <= al tamaño...
         int ubicacionCliente = 0;
 
@@ -61,7 +62,7 @@
         }        
     }//aquí se generará la cdad aleatoria de intentos a realizar para add clientes a la cola de pago [la cual es una var global...]
 
-    void realizarProcesoPago(ListaDoblementeEnlazada<Caja> cajas, Cola<Cliente> colaPagos, Pila<int> *pilaCarritosCompras){
+    void Manager::realizarProcesoPago(ListaDoblementeEnlazada<Caja> cajas, Cola<Cliente> colaPagos, Pila<int> *pilaCarritosCompras){
         for (int cajaActual = 0; cajaActual < cajas.darTamanio(); cajaActual++)
         {
             NodoDoble<Caja> *nodoAuxiliar = cajas.darPrimerNodo();//por eso el método debe devolver punteros xD
@@ -78,7 +79,7 @@
         }               
     }
 
-    void retornarCarritoCompras(Pila<int> *pilaCarritosCompras, int codigoCarritoCompras){
+    void Manager::retornarCarritoCompras(Pila<int> *pilaCarritosCompras, int codigoCarritoCompras){
         if(!pilaCarritosCompras[0].estaLlena() && !pilaCarritosCompras[1].estaLlena()){
             pilaCarritosCompras[rand()%(2)+1].apilar(codigoCarritoCompras);
         }if(!pilaCarritosCompras[0].estaLlena()){

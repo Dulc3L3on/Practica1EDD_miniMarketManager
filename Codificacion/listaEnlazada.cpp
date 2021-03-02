@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
-#include "Nodo.h"
+#include "Nodo.cpp"
 
 using namespace std;
 
@@ -27,8 +27,8 @@ class listaEnlazada
         void limpiarLista();
         int darTamanio();
         bool estaVacia();
-        Nodo<T> darPrimerNodo();
-        Nodo<T> darUltimoNodo();
+        Nodo<T>* darPrimerNodo();
+        Nodo<T>* darUltimoNodo();
         //no veo necesario tener que colocar un insertar en por el hecho de que el recorrido de la lista, especificacmente para el caso de la listaDoblementeEnlazada de cajas, puede hacerse en el método mismo en el que se haga la inserción ó en la clase de la lista 2blementeEnlazada xD
 };
 
@@ -79,10 +79,10 @@ class listaEnlazada
     T listaEnlazada<T>::darYEliminarPrimerElemento(){//esto es para la cola...
         if(tamanio>0){                 
             Nodo<T> *nodoAuxiliar = primerNodo;
-            T contenido = nodoAuxiliar.darContenido();
+            T contenido = nodoAuxiliar->darContenido();
             delete primerNodo;//Aquí se borró el contenido antrior del 1er nodo antes de asignarle el nuevo, a diferencia del método para eliminar el último esto lo digo porque solo se elimina la referncia del nodo temporla auxilar... [aunque no debería hacerse porque desaparee al terminar el contexto del método...], pues se asgina de una vez el nuevo valor en lugar de estar borrado, aunque creo que si hay qie borrar porque sino no se libera la memoria...
 
-            primerNodo = nodoAuxiliar.obtenerElSiguiente();
+            primerNodo = nodoAuxiliar->obtenerElSiguiente();
             delete nodoAuxiliar;            
             tamanio--;
             return contenido;
@@ -93,15 +93,15 @@ class listaEnlazada
     template <class T>
     T listaEnlazada<T>::darYEliminarUltimoElemento(){//Esto es para la pila...
         if(tamanio>0){            
-            T elementoAEliminar = ultimoNodo.darContenido();
+            T elementoAEliminar = ultimoNodo->darContenido();
             delete ultimoNodo;//puedo hacer esto sin problemas, porque solo estoy eleiminando uno de lso 2 caminos en los que se hace referencia a este , y por medio del for elimino la otra forma por medio de la cual sigue existiendo, es decir, por el camino de los "siguientes"...
 
             Nodo<T> *nodoAuxiliar = primerNodo;//Esto es para que se actualice la dirección que almacena el último nodo
             for (int nodoActual = 2; nodoActual < tamanio; nodoActual++)//de tal forma que se quede en el penúltimo nodo...
             {
-                nodoAuxiliar = nodoAuxiliar.obtenerElSiguiente();
+                nodoAuxiliar = nodoAuxiliar->obtenerElSiguiente();
             }
-            delete nodoAuxiliar.obtenerElSiguiente();//liberando ultimo ultimo nodo, puesto que los punteros no pueden hacerse null... creo xD
+            delete nodoAuxiliar->obtenerElSiguiente();//liberando ultimo ultimo nodo, puesto que los punteros no pueden hacerse null... creo xD
             ultimoNodo = nodoAuxiliar;
             tamanio--;
 
@@ -117,7 +117,7 @@ class listaEnlazada
         for (int nodoActual = 2; nodoActual < tamanio; nodoActual++)
         {
             Nodo<T> *nodoSubAuxiliar = nodoAuxiliar;//con el fin de no perder la referencia, para así limpiarla...
-            nodoAuxiliar = nodoAuxiliar.obtenerElSiguiente();
+            nodoAuxiliar = nodoAuxiliar->obtenerElSiguiente();
             delete nodoSubAuxiliar;
         }//for por medio del cual liberameos la memoria hasta el penúltimo nodo...                       
 
@@ -140,12 +140,12 @@ class listaEnlazada
     }
 
     template <class T>
-    Nodo<T> listaEnlazada<T>::darPrimerNodo(){//para la cola...
+    Nodo<T>* listaEnlazada<T>::darPrimerNodo(){//para la cola...
         return primerNodo;
     }
 
     template <class T>
-    Nodo<T> listaEnlazada<T>::darUltimoNodo(){//para la pila...
+    Nodo<T>* listaEnlazada<T>::darUltimoNodo(){//para la pila...
         return ultimoNodo;
     }
 

@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
-#include "NodoDoble.h"
+#include "NodoDoble.cpp"
 
 using namespace std;
 
@@ -24,8 +24,8 @@ class ListaDoblementeEnlazada{//lista xD creo jajaja xD, BIEN YA xD
         void limpiarLista();
         int darTamanio();
         bool estaVacia();
-        NodoDoble<T> *darPrimerNodo();//debe devolver PUNTEROS! xD
-        NodoDoble<T> *darUltimoNodo();
+        NodoDoble<T>* darPrimerNodo();//debe devolver PUNTEROS! xD
+        NodoDoble<T>* darUltimoNodo();
 };
 
 
@@ -38,11 +38,11 @@ class ListaDoblementeEnlazada{//lista xD creo jajaja xD, BIEN YA xD
 
     template <class T>
     void ListaDoblementeEnlazada<T>::anadirAlPrincipio(T elemento){
-         NodoDoble<T> *nuevoNodo = new Nodo<T>(elemento, primerNodo);//recuerda que en el caso de C++, el new se emplea para cuando se quiere asignar una referencia de un OBJ  a un puntero
+         NodoDoble<T> *nuevoNodo = new NodoDoble<T>(elemento, primerNodo);//recuerda que en el caso de C++, el new se emplea para cuando se quiere asignar una referencia de un OBJ  a un puntero
         //NodoDoble<T> nuevoNodo(elemento, primerNodo);//lo hago así por el hecho de que este es un nodo "contenido" no es en sí con el que se estará navegando,por lo cual no requiere de ser un puntero, sino un nodo normal...       
         if(tamanio>0){
             
-            nuevoNodo.obtenerElSiguiente().establecerNodoAnterior(nuevoNodo);//Esto por el error que tuve que corregir en el ejercicio de la listaEnlazada de C++ que dejó el Aux Valiente...         
+            nuevoNodo->obtenerElSiguiente()->establecerNodoAnterior(nuevoNodo);//Esto por el error que tuve que corregir en el ejercicio de la listaEnlazada de C++ que dejó el Aux Valiente...         
             //o en otras palabras, se establece el anterior al que antes era el primer nodo...            
         }//así se establece el nodoAnterior xD
         
@@ -60,9 +60,9 @@ class ListaDoblementeEnlazada{//lista xD creo jajaja xD, BIEN YA xD
             ultimoNodo = primerNodo;
             tamanio++;
         }else{
-            NodoDoble<T> *nuevoNodo = new NodoDoble<T>(elemento);            
+            NodoDoble<T> *nuevoNodo = new NodoDoble<T>(elemento, NULL);            
             nuevoNodo->establecerNodoAnterior(ultimoNodo);
-            nuevoNodo->obtenerElAnterior().establecerNodoSiguiente(nuevoNodo);            
+            nuevoNodo->obtenerElAnterior()->establecerNodoSiguiente(nuevoNodo);//como el nodo anterior, tb es un puntero, por eso coloqué a ->          
 
             ultimoNodo = nuevoNodo;//para que así se pueda dar el seguimiento correcto a la lista...
             tamanio++;
@@ -83,19 +83,19 @@ class ListaDoblementeEnlazada{//lista xD creo jajaja xD, BIEN YA xD
     T ListaDoblementeEnlazada<T>::darYEliminarPrimerElemento(){
         if(tamanio>0){
             NodoDoble<T> *nodoAuxiliar = primerNodo;//Debe ser así por el hecho de que la lista puede llegar a tener un solo elemento...
-            T contenido = nodoAuxiliar.darContenido();
+            T elementoAEliminar = nodoAuxiliar->darContenido();
             delete primerNodo;//Aquí se borró el contenido antrior del 1er nodo antes de asignarle el nuevo, a diferencia del método para eliminar el último esto lo digo porque solo se elimina la referncia del nodo temporla auxilar... [aunque no debería hacerse porque desaparee al terminar el contexto del método...], pues se asgina de una vez el nuevo valor en lugar de estar borrado, aunque creo que si hay qie borrar porque sino no se libera la memoria...
 
             if(tamanio>1){
                 nodoAuxiliar->obtenerElSiguiente()->establecerNodoAnterior(NULL);//puesto que pasa a ser el primero..
-                primerNodo = nodoAuxiliar.obtenerElSiguiente();//pues no tiene sentido hacerlo si el siguiente es nulo :v
+                primerNodo = nodoAuxiliar->obtenerElSiguiente();//pues no tiene sentido hacerlo si el siguiente es nulo :v
             }else{
                 delete ultimoNodo;//pues solo tenía un elemento, entonces alusar esto la lista se quedó vacía...
             }
           
             delete nodoAuxiliar;                        
             tamanio--;
-            return contenido;
+            return elementoAEliminar;
         }
         return NULL;
     }//NICE...
@@ -106,17 +106,17 @@ class ListaDoblementeEnlazada{//lista xD creo jajaja xD, BIEN YA xD
             /*NodoDoble<T> *nodoAEliminar = ultimoNodo;
             T elementoAEliminar = nodoAEliminar.darContenido();
             delete nodoAEliminar;*/
-            T elementoAELiminar = ultimoNodo->darContenido();//no se por qué había creado la var de arriba :v xD, pues se puede obtener directamente el contenido, sin necesidad de tener que crear otra var...
+            T elementoAEliminar = ultimoNodo->darContenido();//no se por qué había creado la var de arriba :v xD, pues se puede obtener directamente el contenido, sin necesidad de tener que crear otra var...
 
             if(tamanio>1){
                 NodoDoble<T> *nodoAuxiliar = primerNodo;//Esto es para que se actualice la dirección que almacena el último nodo
                 for (int nodoActual = 2; nodoActual < tamanio; nodoActual++)//de tal forma que se quede en el penúltimo nodo...
                 {
-                    nodoAuxiliar = nodoAuxiliar.obtenerElSiguiente();
+                    nodoAuxiliar = nodoAuxiliar->obtenerElSiguiente();
                 }
                 //Hice esto por el hecho de que se borró la copia de la dirección que almacenaba el "últimoNodo" mas no al al verdadero último nodo, es decir al que se encuentra en la lista...
             
-                delete nodoAuxiliar.obtenerElSiguiente();//liberando ultimo ultimo nodo, puesto que los punteros no pueden hacerse null... creo xD                
+                delete nodoAuxiliar->obtenerElSiguiente();//liberando ultimo ultimo nodo, puesto que los punteros no pueden hacerse null... creo xD                
                 nodoAuxiliar->establecerNodoSiguiente(NULL);//puesto que pasa a ser el ultimo...
                 ultimoNodo = nodoAuxiliar;
             }else{
@@ -137,7 +137,7 @@ class ListaDoblementeEnlazada{//lista xD creo jajaja xD, BIEN YA xD
         for (int nodoActual = 2; nodoActual < tamanio; nodoActual++)
         {
             NodoDoble<T> *nodoSubAuxiliar = nodoAuxiliar;//con el fin de no perder la referencia, para así limpiarla...
-            nodoAuxiliar = nodoAuxiliar.obtenerElSiguiente();
+            nodoAuxiliar = nodoAuxiliar->obtenerElSiguiente();
             delete nodoSubAuxiliar;
         }//for por medio del cual liberameos la memoria hasta el penúltimo nodo...                       
 
