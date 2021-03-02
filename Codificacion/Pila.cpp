@@ -20,7 +20,7 @@ using namespace std;
     void Pila<T>::apilar(T elementoNuevo){
         for (int elementoActual = 0; elementoActual < capacidadMaxima; elementoActual++)//En C++ el lenght() además de ser un método, solo es aplicacble a los strings...
         {
-            if(elementosPila[elementoActual]==0){//puesto que el número de carretas iniciará a partir de 1 [y estas no será un obj, sino solo un #...], pero esto está mal, porque si no fuera de números sino de chars, el 0 no indicaría vacío... y si fuera de booleans :| xD
+            if(elementosPila[elementoActual]> posicionUltimoElemento){//puesto que el número de carretas iniciará a partir de 1 [y estas no será un obj, sino solo un #...], pero esto está mal, porque si no fuera de números sino de chars, el 0 no indicaría vacío... y si fuera de booleans :| xD
                 elementosPila[elementoActual] = elementoNuevo;
                 posicionUltimoElemento++;
                 break;
@@ -36,7 +36,10 @@ using namespace std;
     template <class T>
     T Pila<T>::desapilarUltimoElemento(){        
         T valorAEliminar = elementosPila[posicionUltimoElemento];
-        elementosPila[posicionUltimoElemento] = 0;//Pero a ligual que en el caso del método para apilar, solo sería correcto hacer esto para valores de tipo numéricos...
+        //elementosPila[posicionUltimoElemento] = 0;//Pero a ligual que en el caso del método para apilar, solo sería correcto hacer esto para valores de tipo numéricos...
+        //yo digo que el delete funciona para cualquier tipo de dato... y de ser así, entonces se ha garantizado que este método podra app a sin importar que tipo de valor sea el que almacene la pila...
+        delete elementosPila[posicionUltimoElemento];
+
         posicionUltimoElemento--;
         return valorAEliminar;
     }
@@ -59,6 +62,13 @@ using namespace std;
         return posicionUltimoElemento;
     }
 
+    template <class T>
+    int Pila<T>::estaLlena(){
+        if(posicionUltimoElemento == capacidadMaxima){
+            return true;
+        }
+        return false;
+    }
 
     template <class T>
     Pila<T>::~Pila(){

@@ -113,14 +113,6 @@ class ListaCircular{//lista xD creo jajaja xD, BIEN YA xD
         if(tamanio>0){
             T contenido;
 
-            /*if(tamanio == 1){
-                contenido = primerNodo->darContenido();
-                delete primerNodo;
-                delete ultimoNodo;
-                tamanio =0;
-                return contenido;
-            }*///esto no debe ir porque sin importar que posición se haya ingresadom si solo tiene 1 elemento, devolverá al unico que está ahi cuando en realidad no se haya solicitado a ese...
-              // eso tb quiere decir que SÍ, los métodos que se llaman en este mpetidi es decir el que elimina el 1ro y último, tendrán que ser capaces de controlar el hecho en el que la lista solo tenga 1 elemento...
             if(posicion == 1){
                 return darYEliminarPrimerElemento();
             }

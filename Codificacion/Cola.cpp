@@ -13,7 +13,10 @@ using namespace std;//esta clase la coloqué tal y como se hace con el resto de 
 
     template <class T>
     void Cola<T>::encolar(T elemento){
-        elementosCola.anadirAlFinal(elemento);
+        if(elemento!=NULL){
+            elementosCola.anadirAlFinal(elemento);
+        }
+        cout<<"El elemento no debe ser NULO"<<endl;
     }
 
     template <class T>

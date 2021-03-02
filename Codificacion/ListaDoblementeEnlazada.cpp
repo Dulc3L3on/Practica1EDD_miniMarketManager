@@ -24,8 +24,8 @@ class ListaDoblementeEnlazada{//lista xD creo jajaja xD, BIEN YA xD
         void limpiarLista();
         int darTamanio();
         bool estaVacia();
-        NodoDoble<T> darPrimerNodo();
-        NodoDoble<T> darUltimoNodo();
+        NodoDoble<T> *darPrimerNodo();//debe devolver PUNTEROS! xD
+        NodoDoble<T> *darUltimoNodo();
 };
 
 
@@ -160,12 +160,12 @@ class ListaDoblementeEnlazada{//lista xD creo jajaja xD, BIEN YA xD
     }
 
     template <class T>
-    NodoDoble<T> ListaDoblementeEnlazada<T>::darPrimerNodo(){
+    NodoDoble<T>* ListaDoblementeEnlazada<T>::darPrimerNodo(){
         return primerNodo;
     }
 
     template <class T>
-    NodoDoble<T> ListaDoblementeEnlazada<T>::darUltimoNodo(){
+    NodoDoble<T>* ListaDoblementeEnlazada<T>::darUltimoNodo(){
         return ultimoNodo;
     }
 

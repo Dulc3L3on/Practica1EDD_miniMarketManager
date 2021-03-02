@@ -20,4 +20,5 @@ class Pila{
         bool estaVacia();
         int darCapacidad();
         int darNumeroElementosActuales();
+        int estaLlena();
 };
