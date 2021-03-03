@@ -7,15 +7,15 @@ using namespace std;
 
     Manager::Manager(){}
   
-    Pila<int>* Manager::prepararCarretas(int numeroCarretas, int numeroCarretasSinUso){
+    Pila<int>* Manager::prepararCarretas(int numeroCarretas, int carretasOcupadas){//Este numero de carretas es por pila...
         Pila<int> *pilaCarretas = new Pila<int>[2]();
         //vamos a seguir con esta forma, y si la pila de carretas te presenta errores, entonces lo que harás es declarar una var global privada de tipo puntero y en este método hacer el new Pila<int>[2] y en una linea, incializar el espacio con Pila<int> [puesto que recibe valores normales, puesto que en realidad así es como funcionan los arreglo] y en otra linea la otra ini xD y así devolverás el ptro gobal al arr de las 2 pilas... [recuerda que la sintaxis y forma de "tratamiento" es simi a como lo hiciste en la pila xD, para colocar el arr que almacena sus datos]
         pilaCarretas[0] = Pila<int>(numeroCarretas);
         pilaCarretas[1] = Pila<int>(numeroCarretas);
 
-        for (int carretaActual = 0; carretaActual < numeroCarretasSinUso; carretaActual++)
+        for (int carretaActual = (carretasOcupadas+1); carretaActual <= (numeroCarretas*2); carretaActual++)
         {            
-            if(numeroCarretasSinUso <= numeroCarretas){
+            if((carretaActual-carretasOcupadas) <= numeroCarretas){//porque sino se estaría itentando apilar más de lo que puede tener la pila... y es <= porque comienza desde 1 la comparación [de la resta[que es igual a la cdad de carretas acumuladas, a agregar a la pila] y la capacidad xD]
                 pilaCarretas[0].apilar(carretaActual);//puesto que requiero enviar un puntero, y un puntero es practicamente una direción, entonces... mando la dirección xD                
             }else{
                 pilaCarretas[1].apilar(carretaActual);

@@ -5,6 +5,7 @@
 
 using namespace std;  
     Simulador::Simulador(){
+        rondaActual=1;
         manager = new Manager();
         totalClientesCreados=0;
         listadoCajas = new ListaDoblementeEnlazada<Caja>();//creo qeu por haber colocado el cnstrct sin paráms, C++ se encarga de llamarlo para realizar la construcción...
@@ -17,7 +18,7 @@ using namespace std;
     }
 
     void Simulador::solicitarDatosInmutables(void){//Es decir el numero de carretas [que app para cada pila] y el numero de cajas, que será útil para el método en el que solicita el tiempo de las cajas...
-        cout<<endl<<"Ingrese #carretas disponibles: ";
+        cout<<endl<<"Ingrese #carretas/pila disponibles: ";//por pila
         cin>>numeroCarretas;//yo creo que si mal no estoy, este hace la conversión por si solo...
         cout<<endl<<"Ingrese #cajas de cobro: ";
         cin>>numeroCajas;
@@ -34,13 +35,13 @@ using namespace std;
     }   
 
     void Simulador::solicitarClientesEnCadaEstacion(void){//supondremos que el # de carretas siempre será > 0, lo que si no supodremos es que sea > al # de cajas de cobro, por si acaso xD, aunque sí debería ser así... :v xD
-        cout<<endl<<"Cuantos clientes de 0 a "<<((numeroCarretas>=numeroCajas)?numeroCajas:numeroCarretas)<<" estan pagando? "<<endl;
+        cout<<endl<<"Cuantos clientes de 0 a "<<(((numeroCarretas)>=numeroCajas)?numeroCajas:(numeroCarretas))<<" estan pagando? ";
         scanf("%d", &clientesEnCadaEstacion[0]);
         if((numeroCarretas-clientesEnCadaEstacion[0])>0){
-            cout<<endl<<"Cuantos clientes de 0 a "<<(numeroCarretas-clientesEnCadaEstacion[0])<<" estan en cola de pagos? "<<endl;
+            cout<<endl<<"Cuantos clientes de 0 a "<<(numeroCarretas-clientesEnCadaEstacion[0])<<" estan en cola de pagos? ";
             scanf("%d", &clientesEnCadaEstacion[1]);
             if((numeroCarretas-clientesEnCadaEstacion[0]-clientesEnCadaEstacion[1])>0){
-                cout<<endl<<"Cuantos clientes de 0 a "<<(numeroCarretas-clientesEnCadaEstacion[0]-clientesEnCadaEstacion[1])<<" escogen productos? "<<endl;
+                cout<<endl<<"Cuantos clientes de 0 a "<<(numeroCarretas-clientesEnCadaEstacion[0]-clientesEnCadaEstacion[1])<<" escogen productos? ";
                 scanf("%d", &clientesEnCadaEstacion[2]);
             }
         }
@@ -78,8 +79,8 @@ using namespace std;
         }        
     }
 
-    int Simulador::solicitarNumeroClientes(void){//INSIDE "agregarClientes"... xD
-        cout<<endl<<endl<<"........----------RONDA: "<<rondaActual<<"------------........"<<endl<<endl;
+    int Simulador::solicitarNumeroClientes(void){
+        cout<<endl<<endl<<"........---------- RONDA: "<<(rondaActual++)<<" ------------........"<<endl<<endl;//coloco después el ++ porque así se manda el valor que tiene la var en ese momento y luego se incre...
         int clientesNuevos;
         cout<<endl<<"Ingrese cantidad clientes nuevos: ";
         cin>>clientesNuevos;
@@ -88,10 +89,12 @@ using namespace std;
 
     bool Simulador::agregarClientes(int numeroClientes){
         if(numeroClientes!=-1){//pues si es este valor, quiere decir que ya no quiere seguir, ni siquiera con los datos que quedaban...
+            totalClientesCreados = (clientesEnCadaEstacion[0] +clientesEnCadaEstacion[1] + clientesEnCadaEstacion[2]);
+
             for (int clienteActual = 0; clienteActual < numeroClientes; clienteActual++)
             {
-                cout<<"Cliente #"<<totalClientesCreados+1<<"ingresa a la tienda"<<endl;//Esta suma solo afecará a la var en esta línea...
-                colaEsperaCarretas->encolar(new Cliente((++totalClientesCreados)));//esto hará que antes de que sea enviada la variable, esta sea incrementada... que es justo lo que quiero... xD, por esa razón es que en el for, se inciia por el valor 1, porque de primero se envia la var y luego se le hace el incremento, por ello cuando llega a la siguiente ronda, llegará con 1 valor más alla [si el incre fue simple...], a diferencia si se colocara ++var, así como ahorita xD
+                cout<<"Cliente #"<<++totalClientesCreados<<"ingresa a la tienda"<<endl;//al hacer la suma así, ya no será necesario hacer el incre en la siguiente... recuerda, que la posicion del ++ [o el duplicado corresp xD, creo que tb se puede con * y /] indica si se hará antes la operación, en este caso un incremento, o se enviará el valor que tenía la variable antes de app la operación... por ello es que al colocar en el for un var++, empezará en el valor ini, pej 0 y a la sig ronda, esta var tendrá el valor dep del incremento...
+                colaEsperaCarretas->encolar(new Cliente((totalClientesCreados)));
             }                                                                                    
             return true;//quiere decir que ingreso un número que indica que sí desea continuar xD  
         }                                                                                             
@@ -103,11 +106,15 @@ using namespace std;
         solicitarTiempoCajas();
         solicitarClientesEnCadaEstacion();
 
-        pilaCarretas = manager->prepararCarretas(numeroCarretas, (numeroCarretas-clientesEnCadaEstacion[0]-clientesEnCadaEstacion[1]-clientesEnCadaEstacion[2]));
+        pilaCarretas = manager->prepararCarretas(numeroCarretas, (clientesEnCadaEstacion[0]+clientesEnCadaEstacion[1]+clientesEnCadaEstacion[2]));
 
-        while(agregarClientes(solicitarNumeroClientes())){//Aquí es donde se pide cada vez a los clientes, pero aún no sé que tipo de var sería a la que se le revisaría el valor para saber si hay que contienuar o no... pues si es bool, tendría que hacer una pregunta a parte, en caambio si es un int podría colocar un -1 para saber que ya no quiere seguir viendo...si mejor eso xD, porque aunque no ingresen cientes, tendría que mostrar "no entraron cleintes", "nadie comprando", "sin cola de pagos", dependiendo en qué puntos la estructura que almacena los clientes esté vaía xD
+        int numeroClientes = solicitarNumeroClientes();
+
+        while(numeroClientes>-1){//con el >-1 justo se hace lo que deseo, es decir que pueda ingresar cualquier numero de clientes menos aquello valores irracionales [<0...], esto porque aunque no ingresen cientes, tendría que mostrar "no entraron cleintes", "nadie comprando", "sin cola de pagos", dependiendo de que estructura que almacena los clientes esté vacía xD
+            agregarClientes(numeroClientes);
             manager->asignarCarritoCompras(colaEsperaCarretas, pilaCarretas, clientesComprando);//ahi revisas si solo era de asignar esto o había que hacer algo más...
             manager->enviarColaPago(clientesComprando, colaPago);
             manager->realizarProcesoPago(listadoCajas, colaPago, pilaCarretas);        
+            numeroClientes = solicitarNumeroClientes();
         }
     }
