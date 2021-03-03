@@ -16,7 +16,8 @@ class Pila{
         int posicionUltimoElemento;
         int capacidadMaxima;
 
-    public:        
+    public:     
+        Pila();//lo iba a colocar, pero mejor lo haré solo si me da problemas el no tenerlo...
         Pila(int);
         ~Pila();
         void apilar(T);
@@ -28,7 +29,10 @@ class Pila{
         int estaLlena();
 };
 
- template <class T>
+    template <class T>
+    Pila<T>::Pila(){}
+
+    template <class T>
     Pila<T>::Pila(int laCapacidadMaxima){
         capacidadMaxima = laCapacidadMaxima;
         posicionUltimoElemento=0;

@@ -61,11 +61,18 @@ class ListaDoblementeEnlazada{//lista xD creo jajaja xD, BIEN YA xD
             ultimoNodo = primerNodo;
             tamanio++;
         }else{
+            /*NodoDoble<T> *nuevoNodoAnterior = ultimoNodo;
+            ultimoNodo->establecerNodoSiguiente(new NodoDoble<T>(elemento, NULL));            
+            ultimoNodo = ultimoNodo->obtenerElSiguiente();
+            ultimoNodo->establecerNodoAnterior(nuevoNodoAnterior);*/
+            //como el nodo anterior, tb es un puntero, por eso coloqué a ->                      
+
             NodoDoble<T> *nuevoNodo = new NodoDoble<T>(elemento, NULL);            
             nuevoNodo->establecerNodoAnterior(ultimoNodo);
             nuevoNodo->obtenerElAnterior()->establecerNodoSiguiente(nuevoNodo);//como el nodo anterior, tb es un puntero, por eso coloqué a ->          
 
-            ultimoNodo = nuevoNodo;//para que así se pueda dar el seguimiento correcto a la lista...
+            ultimoNodo = nuevoNodo;
+
             tamanio++;
         }
     }
