@@ -28,7 +28,7 @@ using namespace std;
     void Simulador::prepararCajas(){
         for (int cajaActual = 0; cajaActual < numeroCajas; cajaActual++)
         {
-            listadoCajas.anadirAlFinal(Caja((cajaActual+1), solicitarTiempoCajas(cajaActual+1)));
+            listadoCajas.anadirAlFinal(new Caja((cajaActual+1), solicitarTiempoCajas(cajaActual+1)));//hice esto, pues cualquiera de las listas tienen como contenido un ptro del tipo correspondeinte que decidieron alamacenar en la lista...
         }        
     }
 
@@ -45,7 +45,7 @@ using namespace std;
             for (int clienteActual = 0; clienteActual < numeroClientes; clienteActual++)
             {
                 cout<<"Cliente #"<<totalClientesCreados+1<<"ingresa a la tienda"<<endl;//Esta suma solo afecará a la var en esta línea...
-                colaEsperaCarretas.encolar(Cliente((++totalClientesCreados)));//esto hará que antes de que sea enviada la variable, esta sea incrementada... que es justo lo que quiero... xD, por esa razón es que en el for, se inciia por el valor 1, porque de primero se envia la var y luego se le hace el incremento, por ello cuando llega a la siguiente ronda, llegará con 1 valor más alla [si el incre fue simple...], a diferencia si se colocara ++var, así como ahorita xD
+                colaEsperaCarretas.encolar(new Cliente((++totalClientesCreados)));//esto hará que antes de que sea enviada la variable, esta sea incrementada... que es justo lo que quiero... xD, por esa razón es que en el for, se inciia por el valor 1, porque de primero se envia la var y luego se le hace el incremento, por ello cuando llega a la siguiente ronda, llegará con 1 valor más alla [si el incre fue simple...], a diferencia si se colocara ++var, así como ahorita xD
             }                                                                                    
             return true;//quiere decir que ingreso un número que indica que sí desea continuar xD  
         }                                                                                             
@@ -63,3 +63,4 @@ using namespace std;
             manager->realizarProcesoPago(listadoCajas, colaPago, pilaCarretas);        
         }
     }
+

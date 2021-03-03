@@ -1,11 +1,13 @@
+#ifndef MANAGER_H
+#define MANAGER_H
 #include <cstdlib>
 #include <iostream>
 #include <string>
-#include "Pila.h"
+#include "Pila.cpp"
 #include "ListaCircular.cpp"
 #include "ListaDoblementeEnlazada.cpp"
 #include "Caja.h"
-#include "Cola.h"
+#include "Cola.cpp"
 
 using namespace std;  
 
@@ -27,10 +29,11 @@ class Manager{
         //void enviarAAreaCompras();
         void enviarColaPago(ListaCircular<Cliente>, Cola<Cliente>);//aquí se generará la cdad aleatoria de intentos a realizar para add clientes a la cola de pago [la cual es una var global...]
         void realizarProcesoPago(ListaDoblementeEnlazada<Caja>, Cola<Cliente>, Pila<int>*);//aquí se hará la revisión de si hay clientes en espera de realizar pago, para así asignarlos a la caja que se encuentre vacía al momento de revisar el listado 2blemente enlazado de cajas y tb se hace el proceso para liberación de las cajas, si es que cumple con una de las 2 condic para este proceso, es decir que aquí se usa el método para retornar el carrito de compras...
-        void retornarCarritoCompras();
+        void retornarCarritoCompras(Pila<int>*, int*);
         
 
         int generarNumeroAleatorio(int);//Quizá sería mejor colocarlo en una clase llamada herramientas...
 };
-
 //Creo que aparte vamos a crear una clase creadora, una de herramientas y otra para las gráficas [quiza la de herramientas solo tenga 1 método, entonces solo se crearía la clase para las gráficas...]
+
+#endif

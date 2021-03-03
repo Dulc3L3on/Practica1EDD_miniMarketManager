@@ -12,7 +12,7 @@ using namespace std;
         tiempoServicio = elTiempoServicio;      
     }//puesto que cuando se asigne el tiempo, se crerpá a la caja, con el fin de reducir trabajo...
     
-    void Caja::agregarCliente(Cliente elCliente){
+    void Caja::agregarCliente(Cliente *elCliente){
         clienteActual = elCliente;
         estaDesocupada = false;
         turnosFaltantes = tiempoServicio;
@@ -43,6 +43,6 @@ using namespace std;
         return estaDesocupada;
     }
 
-    Cliente Caja::darCliente(){
+    Cliente* Caja::darCliente(){
         return clienteActual;
     }

@@ -1,3 +1,5 @@
+#ifndef LISTACIRCULAR_H
+#define LISTACIRCULAR_H
 #include <cstdlib>
 #include <iostream>
 #include <string>
@@ -15,20 +17,19 @@ class ListaCircular{//lista xD creo jajaja xD, BIEN YA xD
     public:    
         ListaCircular();
         ~ListaCircular();        
-        void anadirAlPrincipio(T);//será útil para la Pila, puesto que sobre el primer elemento caen los demás...
-        void anadirAlFinal(T);//Este será útil para todas las listas y para la cola...
-        T darPrimerElemento();
-        T darUltimoElemento();
-        T darYEliminarPrimerElemento();
-        T darYEliminarEn(int);
-        T darYEliminarUltimoElemento();
+        void anadirAlPrincipio(T*);//será útil para la Pila, puesto que sobre el primer elemento caen los demás...
+        void anadirAlFinal(T*);//Este será útil para todas las listas y para la cola...
+        T* darPrimerElemento();
+        T* darUltimoElemento();
+        T* darYEliminarPrimerElemento();
+        T* darYEliminarEn(int);
+        T* darYEliminarUltimoElemento();
         void limpiarLista();
         int darTamanio();
         bool estaVacia();
         NodoDoble<T>* darPrimerNodo();
         NodoDoble<T>* darUltimoNodo();
 };
-
 
     template <class T>
     //Se implementan los métodos declarados en el header [arch.h]... tuvo que colocarse aquí por el hecho de ger clase genérica...
@@ -38,7 +39,7 @@ class ListaCircular{//lista xD creo jajaja xD, BIEN YA xD
     }
 
     template <class T>
-    void ListaCircular<T>::anadirAlPrincipio(T elemento){
+    void ListaCircular<T>::anadirAlPrincipio(T *elemento){
          NodoDoble<T> *nuevoNodo = new NodoDoble<T>(elemento, primerNodo);//recuerda que en el caso de C++, el new se emplea para cuando se quiere asignar una referencia de un OBJ  a un puntero
         //NodoDoble<T> nuevoNodo(elemento, primerNodo);//lo hago así por el hecho de que este es un nodo "contenido" no es en sí con el que se estará navegando,por lo cual no requiere de ser un puntero, sino un nodo normal...       
         if(tamanio>0){            
@@ -57,7 +58,7 @@ class ListaCircular{//lista xD creo jajaja xD, BIEN YA xD
     }
 
     template <class T>
-    void ListaCircular<T>::anadirAlFinal(T elemento){
+    void ListaCircular<T>::anadirAlFinal(T *elemento){
         if(estaVacia()){
             primerNodo = new NodoDoble<T>(elemento, NULL);
             ultimoNodo = primerNodo;
@@ -77,20 +78,20 @@ class ListaCircular{//lista xD creo jajaja xD, BIEN YA xD
     }
 
     template <class T>
-    T ListaCircular<T>::darPrimerElemento(){
+    T* ListaCircular<T>::darPrimerElemento(){
         return primerNodo->darContenido();
     }
 
     template <class T>
-    T ListaCircular<T>::darUltimoElemento(){
+    T* ListaCircular<T>::darUltimoElemento(){
         return ultimoNodo->darContenido();
     }
 
     template <class T>
-    T ListaCircular<T>::darYEliminarPrimerElemento(){
+    T* ListaCircular<T>::darYEliminarPrimerElemento(){
         if(tamanio>0){            
             NodoDoble<T> *nodoAuxiliar = primerNodo;//si debe ser así por el hecho de que puede ser un solo elemento, sino, se provocaría un NULL pointer y otros pasos no tendrían sentido...
-            T contenido = primerNodo->darContenido();
+            T *contenido = primerNodo->darContenido();
             delete primerNodo;//se eleiminar el antiguo primer nodo                         
 
             if(tamanio>1){//para asegurar la trayectoria circular...
@@ -109,9 +110,9 @@ class ListaCircular{//lista xD creo jajaja xD, BIEN YA xD
     }//NOTA: En realidad no debería de tener el if >1 y el else respectivo, puesto que se encarga de esto el métod que engloba a este y al de eliminar ultimo, pero por el hecho de ser punlico, mejor que se deje eso para asegurar su trabajo individual...
 
     template <class T>
-    T ListaCircular<T>::darYEliminarEn(int posicion){//iniciando desde 0 xD
+    T* ListaCircular<T>::darYEliminarEn(int posicion){//iniciando desde 0 xD
         if(tamanio>0){
-            T contenido;
+            T *contenido;
 
             if(posicion == 1){
                 return darYEliminarPrimerElemento();
@@ -141,10 +142,10 @@ class ListaCircular{//lista xD creo jajaja xD, BIEN YA xD
     }//NICE
 
     template <class T>
-    T ListaCircular<T>::darYEliminarUltimoElemento(){
+    T* ListaCircular<T>::darYEliminarUltimoElemento(){
         if(tamanio>0){         
             NodoDoble<T> *nodoAuxiliar = ultimoNodo;//todo este cuerpo debe ser así por el hecho de que la lista podría tener 1 solo elemento...
-            T contenido = ultimoNodo->darContenido();
+            T *contenido = ultimoNodo->darContenido();
             delete ultimoNodo;//se eleiminar el antiguo primer nodo                          
 
             if(tamanio>1){//esto es para asegurar la trayectoria circular...
@@ -158,7 +159,7 @@ class ListaCircular{//lista xD creo jajaja xD, BIEN YA xD
             tamanio--;
             return contenido;
         }
-        return;
+        return NULL;
     }//puesto que este método es "ensamblado" en un método general, que se encarga del caso en el que el solo exista un elemento, entonces no es necesario colocar el if tam >1 y el else correspondiente, pero se dejarán para asegurar su trabajo individual...
 
     template <class T>
@@ -205,3 +206,4 @@ class ListaCircular{//lista xD creo jajaja xD, BIEN YA xD
         limpiarLista();
     }
 
+#endif

@@ -1,3 +1,5 @@
+#ifndef CAJA_H
+#define CAJA_H
 #include <cstdlib>
 #include <iostream>
 #include <string>
@@ -11,17 +13,18 @@ class Caja{
         int tiempoServicio;//en turnos [turnos]
         int turnosFaltantes;
         bool estaDesocupada;
-        Cliente clienteActual;
+        Cliente *clienteActual;
 
     public: 
         Caja();
         Caja(int, int);//puesto que cuando se asigne el tiempo, se crerpá a la caja, con el fin de reducir trabajo...
-        void agregarCliente(Cliente);//se add el cliente y se hace la asignacion en la var turnosFaltantes para permitir regresar el carrito a su pila..        
+        void agregarCliente(Cliente*);//se add el cliente y se hace la asignacion en la var turnosFaltantes para permitir regresar el carrito a su pila..        
         int darCodigo();
         int darTiempoServicio();
         void decrementarTiempoRestante();
         int darTurnosFaltantes();
         void desocuparCaja();
         bool estaLibre();
-        Cliente darCliente();
+        Cliente* darCliente();
 };
+#endif

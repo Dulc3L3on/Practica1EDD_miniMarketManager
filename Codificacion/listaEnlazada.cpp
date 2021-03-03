@@ -1,3 +1,5 @@
+#ifndef LISTAENLAZADA_H
+#define LISTAENLAZADA_H
 //header de la clase listaEnlazada, en el cual se colocan los prototipos 
 //de los métodos variables y constct a emplear...
 #include <cstdlib>
@@ -18,12 +20,12 @@ class listaEnlazada
     public://Se declaran los prototipos de las funciones, que tiene como función indicar al compi con que tipo de valores se estará trabajando...
         listaEnlazada();
         ~listaEnlazada();        
-        void anadirAlPrincipio(T);//será útil para la Pila, puesto que sobre el primer elemento caen los demás...
-        void anadirAlFinal(T);//Este será útil para todas las listas y para la cola...
-        T darPrimerElemento();
-        T darUltimoElemento();
-        T darYEliminarPrimerElemento();
-        T darYEliminarUltimoElemento();
+        void anadirAlPrincipio(T*);//será útil para la Pila, puesto que sobre el primer elemento caen los demás...
+        void anadirAlFinal(T*);//Este será útil para todas las listas y para la cola...
+        T* darPrimerElemento();
+        T* darUltimoElemento();
+        T* darYEliminarPrimerElemento();
+        T* darYEliminarUltimoElemento();
         void limpiarLista();
         int darTamanio();
         bool estaVacia();
@@ -40,7 +42,7 @@ class listaEnlazada
     }
 
     template <class T>
-    void listaEnlazada<T>::anadirAlPrincipio(T elemento){//para la pila...
+    void listaEnlazada<T>::anadirAlPrincipio(T *elemento){//para la pila...
         Nodo<T> *nuevoNodo = new Nodo<T>(elemento, primerNodo);//recuerda que en el caso de C++, el new se emplea para cuando se quiere asignar una referencia de un OBJ  a un puntero
         //Nodo<T> nuevoNodo(elemento, primerNodo);//lo hago así por el hecho de que este es un nodo "contenido" no es en sí con el que se estará navegando,por lo cual no requiere de ser un puntero, sino un nodo normal...       
         primerNodo = nuevoNodo;
@@ -48,7 +50,7 @@ class listaEnlazada
     }
 
     template <class T>
-    void listaEnlazada<T>::anadirAlFinal(T elemento){//para la cola...
+    void listaEnlazada<T>::anadirAlFinal(T *elemento){//para la cola...
         if(estaVacia()){
             primerNodo = new Nodo<T>(elemento);
             ultimoNodo = primerNodo;
@@ -66,34 +68,34 @@ class listaEnlazada
     }
 
     template <class T>
-    T listaEnlazada<T>::darPrimerElemento(){
+    T* listaEnlazada<T>::darPrimerElemento(){
         return primerNodo->darContenido();
     }
 
     template <class T>
-    T listaEnlazada<T>::darUltimoElemento(){
+    T* listaEnlazada<T>::darUltimoElemento(){
         return ultimoNodo->darContenido();
     }
 
     template <class T>
-    T listaEnlazada<T>::darYEliminarPrimerElemento(){//esto es para la cola...
+    T* listaEnlazada<T>::darYEliminarPrimerElemento(){//esto es para la cola...
         if(tamanio>0){                 
             Nodo<T> *nodoAuxiliar = primerNodo;
-            T contenido = nodoAuxiliar->darContenido();
+            T *elementoAEliminar = nodoAuxiliar->darContenido();
             delete primerNodo;//Aquí se borró el contenido antrior del 1er nodo antes de asignarle el nuevo, a diferencia del método para eliminar el último esto lo digo porque solo se elimina la referncia del nodo temporla auxilar... [aunque no debería hacerse porque desaparee al terminar el contexto del método...], pues se asgina de una vez el nuevo valor en lugar de estar borrado, aunque creo que si hay qie borrar porque sino no se libera la memoria...
 
             primerNodo = nodoAuxiliar->obtenerElSiguiente();
             delete nodoAuxiliar;            
             tamanio--;
-            return contenido;
+            return elementoAEliminar;//recuerdate que al enviar esto, lo que estás mandando es la dir, por lo cual al querer acceder al contenido deberás colocar el * en la clase que emplee la listaEnlazada...
         }
         return NULL;
     }//por ser el primero y no tener noción del anterior, entonces para este caso, al momneto de eliminar, basta con que se elimine el contenido del "primerNodo", pues es el único por medio del cual puede hacerse referencia a dichp nodo...
 
     template <class T>
-    T listaEnlazada<T>::darYEliminarUltimoElemento(){//Esto es para la pila...
+    T* listaEnlazada<T>::darYEliminarUltimoElemento(){//Esto es para la pila...
         if(tamanio>0){            
-            T elementoAEliminar = ultimoNodo->darContenido();
+            T *elementoAEliminar = ultimoNodo->darContenido();
             delete ultimoNodo;//puedo hacer esto sin problemas, porque solo estoy eleiminando uno de lso 2 caminos en los que se hace referencia a este , y por medio del for elimino la otra forma por medio de la cual sigue existiendo, es decir, por el camino de los "siguientes"...
 
             Nodo<T> *nodoAuxiliar = primerNodo;//Esto es para que se actualice la dirección que almacena el último nodo
@@ -153,3 +155,5 @@ class listaEnlazada
     listaEnlazada<T>::~listaEnlazada(){//el destructor
         limpiarLista();
     }
+
+#endif

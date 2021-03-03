@@ -15,7 +15,7 @@ using namespace std;
         id = elCodigo;
     }
   
-    void Cliente::recogerCarritoCompras(int codigoCarreta){
+    void Cliente::recogerCarritoCompras(int* codigoCarreta){
         carretaAsignada = codigoCarreta;
     }
 
@@ -23,6 +23,6 @@ using namespace std;
         return id;
     }
 
-    int Cliente::darNumeroCarretaCompras(){
+    int* Cliente::darNumeroCarretaCompras(){
         return carretaAsignada;
-    }
+    }//a mi pensar si debería ser un ptero, puesto que el contenid de la pila es el cotenido de la listaEnlazada y el tipo de contenido de esta, es un ptero...

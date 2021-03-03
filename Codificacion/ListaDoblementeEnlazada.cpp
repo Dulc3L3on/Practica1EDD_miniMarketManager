@@ -1,3 +1,5 @@
+#ifndef LISTADOBLEMENTEENLAZADA_H
+#define LISTADOBLEMENTEENLAZADA_H
 #include <cstdlib>
 #include <iostream>
 #include <string>
@@ -15,19 +17,18 @@ class ListaDoblementeEnlazada{//lista xD creo jajaja xD, BIEN YA xD
     public:    
         ListaDoblementeEnlazada();
         ~ListaDoblementeEnlazada();        
-        void anadirAlPrincipio(T);//será útil para la Pila, puesto que sobre el primer elemento caen los demás...
-        void anadirAlFinal(T);//Este será útil para todas las listas y para la cola...
-        T darPrimerElemento();
-        T darUltimoElemento();
-        T darYEliminarPrimerElemento();
-        T darYEliminarUltimoElemento();
+        void anadirAlPrincipio(T*);//será útil para la Pila, puesto que sobre el primer elemento caen los demás...
+        void anadirAlFinal(T*);//Este será útil para todas las listas y para la cola...
+        T* darPrimerElemento();
+        T* darUltimoElemento();
+        T* darYEliminarPrimerElemento();
+        T* darYEliminarUltimoElemento();
         void limpiarLista();
         int darTamanio();
         bool estaVacia();
         NodoDoble<T>* darPrimerNodo();//debe devolver PUNTEROS! xD
         NodoDoble<T>* darUltimoNodo();
 };
-
 
     template <class T>
     //Se implementan los métodos declarados en el header [arch.h]... tuvo que colocarse aquí por el hecho de ger clase genérica...
@@ -37,7 +38,7 @@ class ListaDoblementeEnlazada{//lista xD creo jajaja xD, BIEN YA xD
     }
 
     template <class T>
-    void ListaDoblementeEnlazada<T>::anadirAlPrincipio(T elemento){
+    void ListaDoblementeEnlazada<T>::anadirAlPrincipio(T *elemento){
          NodoDoble<T> *nuevoNodo = new NodoDoble<T>(elemento, primerNodo);//recuerda que en el caso de C++, el new se emplea para cuando se quiere asignar una referencia de un OBJ  a un puntero
         //NodoDoble<T> nuevoNodo(elemento, primerNodo);//lo hago así por el hecho de que este es un nodo "contenido" no es en sí con el que se estará navegando,por lo cual no requiere de ser un puntero, sino un nodo normal...       
         if(tamanio>0){
@@ -54,7 +55,7 @@ class ListaDoblementeEnlazada{//lista xD creo jajaja xD, BIEN YA xD
     }
 
     template <class T>
-    void ListaDoblementeEnlazada<T>::anadirAlFinal(T elemento){
+    void ListaDoblementeEnlazada<T>::anadirAlFinal(T *elemento){
         if(estaVacia()){
             primerNodo = new NodoDoble<T>(elemento, NULL);
             ultimoNodo = primerNodo;
@@ -70,20 +71,20 @@ class ListaDoblementeEnlazada{//lista xD creo jajaja xD, BIEN YA xD
     }
 
     template <class T>
-    T ListaDoblementeEnlazada<T>::darPrimerElemento(){
+    T* ListaDoblementeEnlazada<T>::darPrimerElemento(){
         return primerNodo->darContenido();
     }
 
     template <class T>
-    T ListaDoblementeEnlazada<T>::darUltimoElemento(){
+    T* ListaDoblementeEnlazada<T>::darUltimoElemento(){
         return ultimoNodo->darContenido();
     }
 
     template <class T>
-    T ListaDoblementeEnlazada<T>::darYEliminarPrimerElemento(){
+    T* ListaDoblementeEnlazada<T>::darYEliminarPrimerElemento(){
         if(tamanio>0){
             NodoDoble<T> *nodoAuxiliar = primerNodo;//Debe ser así por el hecho de que la lista puede llegar a tener un solo elemento...
-            T elementoAEliminar = nodoAuxiliar->darContenido();
+            T *elementoAEliminar = nodoAuxiliar->darContenido();
             delete primerNodo;//Aquí se borró el contenido antrior del 1er nodo antes de asignarle el nuevo, a diferencia del método para eliminar el último esto lo digo porque solo se elimina la referncia del nodo temporla auxilar... [aunque no debería hacerse porque desaparee al terminar el contexto del método...], pues se asgina de una vez el nuevo valor en lugar de estar borrado, aunque creo que si hay qie borrar porque sino no se libera la memoria...
 
             if(tamanio>1){
@@ -101,12 +102,12 @@ class ListaDoblementeEnlazada{//lista xD creo jajaja xD, BIEN YA xD
     }//NICE...
 
     template <class T>
-    T ListaDoblementeEnlazada<T>::darYEliminarUltimoElemento(){//Debe ser así por el hecho de que la lista puede llegar a tener un solo elemento...
+    T* ListaDoblementeEnlazada<T>::darYEliminarUltimoElemento(){//Debe ser así por el hecho de que la lista puede llegar a tener un solo elemento...
         if(tamanio>0){
             /*NodoDoble<T> *nodoAEliminar = ultimoNodo;
             T elementoAEliminar = nodoAEliminar.darContenido();
             delete nodoAEliminar;*/
-            T elementoAEliminar = ultimoNodo->darContenido();//no se por qué había creado la var de arriba :v xD, pues se puede obtener directamente el contenido, sin necesidad de tener que crear otra var...
+            T *elementoAEliminar = ultimoNodo->darContenido();//no se por qué había creado la var de arriba :v xD, pues se puede obtener directamente el contenido, sin necesidad de tener que crear otra var...
 
             if(tamanio>1){
                 NodoDoble<T> *nodoAuxiliar = primerNodo;//Esto es para que se actualice la dirección que almacena el último nodo
@@ -173,3 +174,5 @@ class ListaDoblementeEnlazada{//lista xD creo jajaja xD, BIEN YA xD
     ListaDoblementeEnlazada<T>::~ListaDoblementeEnlazada(){//el destructor
         limpiarLista();
     }
+
+#endif

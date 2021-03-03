@@ -12,7 +12,7 @@ using namespace std;
 
         for (int carretaActual = 0; carretaActual < numeroCarretas; carretaActual++)
         {
-            pilaCarretas[0].apilar(carretaActual);
+            pilaCarretas[0].apilar(carretaActual);//puesto que requiero enviar un puntero, y un puntero es practicamente una direción, entonces... mando la dirección xD
             pilaCarretas[1].apilar(carretaActual);
         }   
         return pilaCarretas;
@@ -26,14 +26,14 @@ using namespace std;
         while(!colaEsperaCarretas.estaVacia() && (!pilaCarretas[0].estaVacia() || !pilaCarretas[1].estaVacia())){//pues se requiere que al menos 1 de las dos tengan carretas...
 
             if(!pilaCarretas[0].estaVacia() && !pilaCarretas[1].estaVacia()){//puesto que recibir un puntero es recibir la cabeza de un arreglo xD                
-                colaEsperaCarretas.inspeccionarPrimerElemento().recogerCarritoCompras(pilaCarretas[rand()%(2)+1].desapilarUltimoElemento());//para que se agarre cualquira de las carretas... xD                 
+                colaEsperaCarretas.inspeccionarPrimerElemento()->recogerCarritoCompras(pilaCarretas[rand()%(2)+1].desapilarUltimoElemento());//para que se agarre cualquira de las carretas... xD                 
             }else if(!pilaCarretas[0].estaVacia()){
-                colaEsperaCarretas.inspeccionarPrimerElemento().recogerCarritoCompras(pilaCarretas[0].desapilarUltimoElemento());
+                colaEsperaCarretas.inspeccionarPrimerElemento()->recogerCarritoCompras(pilaCarretas[0].desapilarUltimoElemento());
             }else{//Es decir que la 1 está llena [está asegurado este hecho por la condición del while... xD]
-                colaEsperaCarretas.inspeccionarPrimerElemento().recogerCarritoCompras(pilaCarretas[1].desapilarUltimoElemento());
+                colaEsperaCarretas.inspeccionarPrimerElemento()->recogerCarritoCompras(pilaCarretas[1].desapilarUltimoElemento());//si la var que recibía esto hubiera sido un int norma y no un int ptro, hubieras tenido que colocar el * puesto que el contenido de la pila es un ptro y se requieria un valor, y este * permite realizar la conversión...
             }            
             
-            cout<<"El cliente "<<colaEsperaCarretas.inspeccionarPrimerElemento().darIdentificacion()<<" escoge carreta # "<<colaEsperaCarretas.inspeccionarPrimerElemento().darNumeroCarretaCompras()<<endl;
+            cout<<"El cliente "<<colaEsperaCarretas.inspeccionarPrimerElemento()->darIdentificacion()<<" escoge carreta # "<<colaEsperaCarretas.inspeccionarPrimerElemento()->darNumeroCarretaCompras()<<endl;//creo que aquí lo que voy a estar mostando será la dirección y no el contendio, lo cual es lo que deseo... pero su recuerdas, cuando en C hiciste esto, tb pensaste que termianrías obteniendo el valor, pero no fue así, y terminaste concluyendo que era porque por default devuelve el valor y si se coloca el & devuelve la dirección, entonces quiere decir que sabe que tipo de evolución debe ahcer según el contexto...
             clientesEnCompras.anadirAlFinal(colaEsperaCarretas.desencolarPrimerElemento());//y así se agrega a la tienda a cliente par que pueda escoger sus productos xD            
         }
 
@@ -55,8 +55,8 @@ using namespace std;
         {
             ubicacionCliente = (rand()%(100)+1);//en realidad debería ser un número desde 0 hasta el tam [pero en las indicaciones 1 a 100], pues sino, no todos tendrán oportunidad de salir en el primer intento
             if(ubicacionCliente <= clientesEnCompras.darTamanio()){//puesto que tengo que mostrar un msje...
-                Cliente cliente = clientesEnCompras.darYEliminarEn(ubicacionCliente);
-                cout<<"Cliente #"<<cliente.darIdentificacion()<<"procede a pagar la compra"<<endl;
+                Cliente *cliente = clientesEnCompras.darYEliminarEn(ubicacionCliente);//puesto que lo que devuelve es un puntero...
+                cout<<"Cliente #"<<cliente->darIdentificacion()<<"procede a pagar la compra"<<endl;
                 colaDePagos.encolar(cliente);//De esta forma se da el cliente que fue escogido por medio del "azar"
             }
         }        
@@ -66,15 +66,15 @@ using namespace std;
         for (int cajaActual = 0; cajaActual < cajas.darTamanio(); cajaActual++)
         {
             NodoDoble<Caja> *nodoAuxiliar = cajas.darPrimerNodo();//por eso el método debe devolver punteros xD
-            if(!nodoAuxiliar->darContenido().estaLibre() && nodoAuxiliar->darContenido().darTurnosFaltantes()==0){
-                cout<<"Cliente # "<<nodoAuxiliar->darContenido().darCliente().darIdentificacion()<<"sale de la tienda y devuelve carreta #"<<nodoAuxiliar->darContenido().darCliente().darNumeroCarretaCompras()<<endl;
-                retornarCarritoCompras(pilaCarritosCompras, nodoAuxiliar->darContenido().darCliente().darNumeroCarretaCompras());//puesto que al desocupar la caja, se va el cliente y el carrito xD
-                nodoAuxiliar->darContenido().desocuparCaja();                
+            if(!nodoAuxiliar->darContenido()->estaLibre() && nodoAuxiliar->darContenido()->darTurnosFaltantes()==0){
+                cout<<"Cliente # "<<nodoAuxiliar->darContenido()->darCliente()->darIdentificacion()<<"sale de la tienda y devuelve carreta #"<<nodoAuxiliar->darContenido()->darCliente()->darNumeroCarretaCompras()<<endl;
+                retornarCarritoCompras(pilaCarritosCompras, *nodoAuxiliar->darContenido()->darCliente()->darNumeroCarretaCompras());//puesto que al desocupar la caja, se va el cliente y el carrito xD
+                nodoAuxiliar->darContenido()->desocuparCaja();                
             }
-            if(!nodoAuxiliar->darContenido().estaLibre() && nodoAuxiliar->darContenido().darTurnosFaltantes()>0){
-                nodoAuxiliar->darContenido().decrementarTiempoRestante();
-            }if(nodoAuxiliar->darContenido().estaLibre() && !colaPagos.estaVacia()){
-                nodoAuxiliar->darContenido().agregarCliente(colaPagos.desencolarPrimerElemento());//Se elimina al primer cliente en espera de la cola de pagos y se le asigna en una caja...
+            if(!nodoAuxiliar->darContenido()->estaLibre() && nodoAuxiliar->darContenido()->darTurnosFaltantes()>0){
+                nodoAuxiliar->darContenido()->decrementarTiempoRestante();
+            }if(nodoAuxiliar->darContenido()->estaLibre() && !colaPagos.estaVacia()){
+                nodoAuxiliar->darContenido()->agregarCliente(colaPagos.desencolarPrimerElemento());//Se elimina al primer cliente en espera de la cola de pagos y se le asigna en una caja...
             }    
         }               
     }
@@ -87,6 +87,4 @@ using namespace std;
         }if(!pilaCarritosCompras[1].estaLlena()){
             pilaCarritosCompras[1].apilar(codigoCarritoCompras);
         }
-    }//Aqui se revisa se genera el numero aleatorio entre 1 y 2 para poner a disponibilidad la carreta
-
-    
+    }//Aqui se revisa se genera el numero aleatorio entre 1 y 2 para poner a disponibilidad la carreta    

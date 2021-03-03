@@ -1,3 +1,6 @@
+#ifndef SIMULADOR_H
+#define SIMULADOR_H
+//estos son los guardas y su función es que si al incluir más de un aclase en otra, algunas de las incluidas incluyan xD, a una clase o header en común, no exista error por aparecer más de una vez la definición de la clase :3 xD
 #include <cstdlib>
 #include <iostream>
 #include <string>
@@ -27,3 +30,4 @@ class Simulador{
         bool agregarClientes(int);
 
 };
+#endif
