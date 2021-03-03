@@ -29,19 +29,19 @@ using namespace std;
 
         for (int numeroCaja = 1; numeroCaja <= numeroCajas; numeroCaja++)
         {
-            cout<<endl<<"Ingrese tunos por cliente caja #"<<numeroCaja<<": ";
+            cout<<endl<<"Ingrese turnos/cliente caja #"<<numeroCaja<<": ";
             scanf("%d", &duracionAtencion[numeroCaja-1]);        
         }               
     }   
 
     void Simulador::solicitarClientesEnCadaEstacion(void){//supondremos que el # de carretas siempre será > 0, lo que si no supodremos es que sea > al # de cajas de cobro, por si acaso xD, aunque sí debería ser así... :v xD
-        cout<<endl<<"Cuantos clientes de 0 a "<<(((numeroCarretas)>=numeroCajas)?numeroCajas:(numeroCarretas))<<" estan pagando? ";
+        cout<<endl<<"Cuantos clientes de 0 a "<<(((numeroCarretas*2)>=numeroCajas)?numeroCajas:(numeroCarretas*2))<<" estan pagando? ";
         scanf("%d", &clientesEnCadaEstacion[0]);
-        if((numeroCarretas-clientesEnCadaEstacion[0])>0){
-            cout<<endl<<"Cuantos clientes de 0 a "<<(numeroCarretas-clientesEnCadaEstacion[0])<<" estan en cola de pagos? ";
+        if(((numeroCarretas*2)-clientesEnCadaEstacion[0])>0){
+            cout<<endl<<"Cuantos clientes de 0 a "<<((numeroCarretas*2)-clientesEnCadaEstacion[0])<<" estan en cola de pagos? ";
             scanf("%d", &clientesEnCadaEstacion[1]);
-            if((numeroCarretas-clientesEnCadaEstacion[0]-clientesEnCadaEstacion[1])>0){
-                cout<<endl<<"Cuantos clientes de 0 a "<<(numeroCarretas-clientesEnCadaEstacion[0]-clientesEnCadaEstacion[1])<<" escogen productos? ";
+            if(((numeroCarretas*2)-clientesEnCadaEstacion[0]-clientesEnCadaEstacion[1])>0){
+                cout<<endl<<"Cuantos clientes de 0 a "<<((numeroCarretas*2)-clientesEnCadaEstacion[0]-clientesEnCadaEstacion[1])<<" escogen productos? ";
                 scanf("%d", &clientesEnCadaEstacion[2]);
             }
         }
