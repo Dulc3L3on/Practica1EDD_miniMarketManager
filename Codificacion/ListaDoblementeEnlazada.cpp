@@ -61,19 +61,35 @@ class ListaDoblementeEnlazada{//lista xD creo jajaja xD, BIEN YA xD
             ultimoNodo = primerNodo;
             tamanio++;
         }else{
+            NodoDoble<T> *nuevoNodoAnterior = ultimoNodo;
+            cout<<"\tse guarda ultimo nodo"<<endl;
+            NodoDoble<T> *nuevoUltimo =  new NodoDoble<T>(elemento, NULL);
+            nuevoUltimo->establecerNodoAnterior(nuevoNodoAnterior);
+            cout<<"\tse establece nodo anterior"<<endl;
+            nuevoNodoAnterior->establecerNodoSiguiente(nuevoUltimo);            
+            cout<<"\tse estalece nodo siguiente"<<endl;
+            ultimoNodo = nuevoUltimo;
+            cout<<"\tse actualiza ultimo nodo"<<endl;                     
+
             /*NodoDoble<T> *nuevoNodoAnterior = ultimoNodo;
-            ultimoNodo->establecerNodoSiguiente(new NodoDoble<T>(elemento, NULL));            
-            ultimoNodo = ultimoNodo->obtenerElSiguiente();
-            ultimoNodo->establecerNodoAnterior(nuevoNodoAnterior);*/
-            //como el nodo anterior, tb es un puntero, por eso coloqué a ->                      
+            cout<<"\tse guarda ultimo nodo"<<endl;
+            nuevoNodoAnterior->establecerNodoSiguiente(new NodoDoble<T>(elemento, NULL));            
+            cout<<"se estalece nodo siguiente"<<endl;
+            ultimoNodo = nuevoNodoAnterior->obtenerElSiguiente();
+            cout<<"se actualiza ultimo nodo"<<endl;
+            ultimoNodo->establecerNodoAnterior(nuevoNodoAnterior);
+            cout<<"se establece nodo anterior"<<endl;*/
+            //como el nodo anterior, tb es un puntero, por eso coloqué a ->                  
 
-            NodoDoble<T> *nuevoNodo = new NodoDoble<T>(elemento, NULL);            
+            /*NodoDoble<T> *nuevoNodo = new NodoDoble<T>(elemento, NULL);   
+            cout<<endl<<"creo el nuevoNodo"<<endl;
             nuevoNodo->establecerNodoAnterior(ultimoNodo);
-            nuevoNodo->obtenerElAnterior()->establecerNodoSiguiente(nuevoNodo);//como el nodo anterior, tb es un puntero, por eso coloqué a ->          
+            cout<<endl<<"se establece el anterior"<<endl;           
+            nuevoNodo->obtenerElAnterior()->establecerNodoSiguiente(nuevoNodo);//como el nodo anterior, tb es un puntero, por eso coloqué a ->         
+            //SI funciona así, entonces mejor establececelo al ultimo nodo xD, pero de todos modos pruebas esa otra forma, pues podría variar...            
+            cout<<endl<<"se establece el sig del anterior"<<endl;*/           
 
-            ultimoNodo = nuevoNodo;
-
-            tamanio++;
+            tamanio++;            
         }
     }
 

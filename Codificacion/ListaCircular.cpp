@@ -64,15 +64,25 @@ class ListaCircular{//lista xD creo jajaja xD, BIEN YA xD
             ultimoNodo = primerNodo;
             tamanio++;
         }else{
-            NodoDoble<T> *nuevoNodo = new NodoDoble<T>(elemento, NULL);            
+            NodoDoble<T> *nuevoNodoAnterior = ultimoNodo;
+            cout<<"\tse guarda ultimo nodo"<<endl;
+            NodoDoble<T> *nuevoUltimo =  new NodoDoble<T>(elemento, NULL);
+            nuevoUltimo->establecerNodoAnterior(nuevoNodoAnterior);
+            cout<<"\tse establece nodo anterior"<<endl;
+            nuevoNodoAnterior->establecerNodoSiguiente(nuevoUltimo);            
+            cout<<"\tse estalece nodo siguiente"<<endl;
+            ultimoNodo = nuevoUltimo;
+            cout<<"\tse actualiza ultimo nodo"<<endl;           
+
+         /* NodoDoble<T> *nuevoNodo = new NodoDoble<T>(elemento, NULL);            
             nuevoNodo->establecerNodoAnterior(ultimoNodo);
-            nuevoNodo->obtenerElAnterior()->establecerNodoSiguiente(nuevoNodo);            
+            nuevoNodo->obtenerElAnterior()->establecerNodoSiguiente(nuevoNodo);*/
 
             //para formar la trayectoria circular...
-            nuevoNodo->establecerNodoSiguiente(primerNodo);
-            primerNodo->establecerNodoAnterior(nuevoNodo);
+            nuevoUltimo->establecerNodoSiguiente(primerNodo);
+            primerNodo->establecerNodoAnterior(nuevoUltimo);
 
-            ultimoNodo = nuevoNodo;//para que así se pueda dar el seguimiento correcto a la lista...
+            /*ultimoNodo = nuevoNodo;//para que así se pueda dar el seguimiento correcto a la lista... *///yo veo que no importa que esté antes de hacer las asignaciones para que siga con la trayec circular, puesto que solo estoy haciendo que en lugar de que se haga la igualación cuando ya el nuevo nodo al que se iguala el último, posee todo, se le asigna no solo a este nuevo nodo, sino tb al ultimo, de manera "simultanea"
             tamanio++;
         }
     }

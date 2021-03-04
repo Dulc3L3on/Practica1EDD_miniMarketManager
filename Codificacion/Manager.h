@@ -13,6 +13,7 @@ using namespace std;
 
 class Manager{
     private:
+        Pila<int> *pilaCarretas;
         void retornarCarritoCompras(Pila<int>*, int);//Aqui se revisa se genera el numero aleatorio entre 1 y 2 para poner a disponibilidad la carreta
 
     public:

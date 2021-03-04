@@ -45,12 +45,13 @@ using namespace std;
                 scanf("%d", &clientesEnCadaEstacion[2]);
             }
         }
-        asignarClientesEnCadaEstacion();
+//        asignarClientesEnCadaEstacion();
     }
 
     void Simulador::prepararCajas(void){//INSIDE "asignarClientesEnCadaEstacion"                
         for (int cajaActual = 0; cajaActual < numeroCajas; cajaActual++)
         {
+            cout<<endl<<"intenta añadir al final la caja"<<endl;
             listadoCajas->anadirAlFinal(new Caja((cajaActual+1), duracionAtencion[cajaActual]));//hice esto, pues cualquiera de las listas tienen como contenido un ptro del tipo correspondeinte que decidieron alamacenar en la lista...
             
             if(cajaActual< clientesEnCadaEstacion[0]){//para clientes en caja, pongo asi la condición porque supongo que si ingresaron lo que esperaba es decir un #>0 y <= al #de cajas...
@@ -58,10 +59,11 @@ using namespace std;
                 listadoCajas->darUltimoElemento()->agregarCliente(new Cliente(idCorrespondiente));//puesto que los primeros clientes se tomarán como los primeros en llegar a la caja, por lo tanto estos tienen el mismo id que el de las cajas...
                 listadoCajas->darUltimoElemento()->darCliente()->recogerCarritoCompras(&idCorrespondiente);//puesto que son las primeras carretas, por lo cual tiene los primeros id's xD
             }
-        }        
+        }   
+        cout<<endl<<"se añadieron todas las cajas"<<endl;     
     } 
 
-    void Simulador::asignarClientesEnCadaEstacion(void){//INSIDE "solicitarClientesEnCadaEstacion"
+    void Simulador::asignarClientesEnCadaEstacion(void){//INSIDE "solicitarClientesEnCadaEstacion", antes, ahora está afuera...xD
         prepararCajas();//aquí se asginan los códigos a las cajas, además del tiempo que tardan en liberar un cliente y al cliente xD
 
         for (int clienteCreadoEnEstacion =1;  clienteCreadoEnEstacion <= (manager->max(clientesEnCadaEstacion[1],clientesEnCadaEstacion[2])); clienteCreadoEnEstacion++)//comencé en 1 puesto que es más común comenzar un conteo a partir de ese valor... y además así será más fácil colocar el id del cliente, que sería = (#clientesACrearEnEstacion(es)Anterior(es)+#ClientesCreadosEstacionActual)
@@ -70,13 +72,16 @@ using namespace std;
                 int idCorrespondiente = clientesEnCadaEstacion[0]+clienteCreadoEnEstacion;
                 colaPago->encolar(new Cliente(idCorrespondiente));//pues así se puede lograr el id acumulado
                 colaPago->inspeccionarPrimerElemento()->recogerCarritoCompras(&idCorrespondiente);//aunque si mal no recuerdo, estos métodos de los punteros, no son utiles para asignar sino solo para dar, a pesar de que el obj que almacena, posea el setter respectivo...
+                cout<<endl<<"se encolo a "<<idCorrespondiente<<" en cola de pagos"<<endl;
             }
             if(clienteCreadoEnEstacion<= clientesEnCadaEstacion[2]){//para clientes escogiendo productos
-                 int idCorrespondiente = clientesEnCadaEstacion[0]+clientesEnCadaEstacion[1]+clienteCreadoEnEstacion;
-                 clientesComprando->anadirAlFinal(new Cliente(idCorrespondiente));
-                 clientesComprando->darUltimoElemento()->recogerCarritoCompras(&idCorrespondiente);
+                int idCorrespondiente = clientesEnCadaEstacion[0]+clientesEnCadaEstacion[1]+clienteCreadoEnEstacion;
+                clientesComprando->anadirAlFinal(new Cliente(idCorrespondiente));
+                clientesComprando->darUltimoElemento()->recogerCarritoCompras(&idCorrespondiente);
+                cout<<endl<<idCorrespondiente<<" procede a escoger sus productos"<<endl;
             }
         }        
+        cout<<"se terminaron de añadir a los clientes en cada estación"<<endl;
     }
 
     int Simulador::solicitarNumeroClientes(void){
@@ -93,7 +98,7 @@ using namespace std;
 
             for (int clienteActual = 0; clienteActual < numeroClientes; clienteActual++)
             {
-                cout<<"Cliente #"<<++totalClientesCreados<<"ingresa a la tienda"<<endl;//al hacer la suma así, ya no será necesario hacer el incre en la siguiente... recuerda, que la posicion del ++ [o el duplicado corresp xD, creo que tb se puede con * y /] indica si se hará antes la operación, en este caso un incremento, o se enviará el valor que tenía la variable antes de app la operación... por ello es que al colocar en el for un var++, empezará en el valor ini, pej 0 y a la sig ronda, esta var tendrá el valor dep del incremento...
+                cout<<endl<<"Cliente #"<<++totalClientesCreados<<" ingresa a la tienda"<<endl;//al hacer la suma así, ya no será necesario hacer el incre en la siguiente... recuerda, que la posicion del ++ [o el duplicado corresp xD, creo que tb se puede con * y /] indica si se hará antes la operación, en este caso un incremento, o se enviará el valor que tenía la variable antes de app la operación... por ello es que al colocar en el for un var++, empezará en el valor ini, pej 0 y a la sig ronda, esta var tendrá el valor dep del incremento...
                 colaEsperaCarretas->encolar(new Cliente((totalClientesCreados)));
             }                                                                                    
             return true;//quiere decir que ingreso un número que indica que sí desea continuar xD  
@@ -105,16 +110,21 @@ using namespace std;
         solicitarDatosInmutables();        
         solicitarTiempoCajas();
         solicitarClientesEnCadaEstacion();
+        asignarClientesEnCadaEstacion();
 
         pilaCarretas = manager->prepararCarretas(numeroCarretas, (clientesEnCadaEstacion[0]+clientesEnCadaEstacion[1]+clientesEnCadaEstacion[2]));
-
+        cout<<endl<<"se apilaron las carretas"<<endl;
         int numeroClientes = solicitarNumeroClientes();
 
         while(numeroClientes>-1){//con el >-1 justo se hace lo que deseo, es decir que pueda ingresar cualquier numero de clientes menos aquello valores irracionales [<0...], esto porque aunque no ingresen cientes, tendría que mostrar "no entraron cleintes", "nadie comprando", "sin cola de pagos", dependiendo de que estructura que almacena los clientes esté vacía xD
             agregarClientes(numeroClientes);
+            cout<<endl<<"fin de la add de clientes nuevos"<<endl;
             manager->asignarCarritoCompras(colaEsperaCarretas, pilaCarretas, clientesComprando);//ahi revisas si solo era de asignar esto o había que hacer algo más...
+            cout<<endl<<"fin asignacion carritos de compras"<<endl;
             manager->enviarColaPago(clientesComprando, colaPago);
+            cout<<endl<<"fin add a cola de pago"<<endl;
             manager->realizarProcesoPago(listadoCajas, colaPago, pilaCarretas);        
+            cout<<endl<<"fin proceso de cobro"<<endl;
             numeroClientes = solicitarNumeroClientes();
         }
     }

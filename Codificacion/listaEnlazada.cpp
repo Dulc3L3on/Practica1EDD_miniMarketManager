@@ -55,15 +55,19 @@ class listaEnlazada
             primerNodo = new Nodo<T>(elemento);
             ultimoNodo = primerNodo;
             tamanio++;
+            cout<<"\tse añadio al primer nodo"<<endl;
         }else{
             Nodo<T> *nuevoNodo = new Nodo<T>(elemento);            
+            cout<<"\tse creo al nuevo ultimo nodo"<<endl;
             /*Nodo<T> *nodoSiguienteAntiguoUltimo = ultimoNodo->obtenerElSiguiente();
             nodoSiguienteAntiguoUltimo = nuevoNodo;*/
         
             ultimoNodo->establecerElSiguiente(nuevoNodo);
+            cout<<"\tse establece al nuevo siguiente"<<endl;
 
             ultimoNodo = nuevoNodo;//para darle seguimiento a la lista...
-            tamanio++;
+            cout<<"\tse reestablece al ultimo nodo"<<endl;
+            tamanio++;            
         }
     }
 

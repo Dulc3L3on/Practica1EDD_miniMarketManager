@@ -35,25 +35,21 @@ class Pila{
     template <class T>
     Pila<T>::Pila(int laCapacidadMaxima){
         capacidadMaxima = laCapacidadMaxima;
-        posicionUltimoElemento=0;
+        posicionUltimoElemento=-1;//para que así no hayan errores por tener a este índice 1 más alla de la posición en la que en realidad se encuenrta el último...
         elementosPila = new T[capacidadMaxima];                       
     }
 
     template <class T>
-    void Pila<T>::apilar(T elementoNuevo){//para así recibir la posición del número... si no da, entonces lo que se hará es que al devolver el ID de los carritos, se devuelva la dirección de estos vals... y con eso problema resoluto xD, es decir que se recibirán en esta clase valores normales y se devolverán las direcciones de esos valores...
-        for (int elementoActual = 0; elementoActual < capacidadMaxima; elementoActual++)//En C++ el lenght() además de ser un método, solo es aplicacble a los strings...
-        {
-            if(elementosPila[elementoActual]> posicionUltimoElemento){//puesto que el número de carretas iniciará a partir de 1 [y estas no será un obj, sino solo un #...], pero esto está mal, porque si no fuera de números sino de chars, el 0 no indicaría vacío... y si fuera de booleans :| xD
-                elementosPila[elementoActual] = elementoNuevo;//a mi parecer solo debe ser el valor y no & porque el arreglo es de tipo normal, pero a él apunta u puntero...
-                posicionUltimoElemento++;
-                break;
-            }
-        }        
+    void Pila<T>::apilar(T elementoNuevo){//para así recibir la posición del número... si no da, entonces lo que se hará es que al devolver el ID de los carritos, se devuelva la dirección de estos vals... y con eso problema resoluto xD, es decir que se recibirán en esta clase valores normales y se devolverán las direcciones de esos valores...       
+        if(posicionUltimoElemento<(capacidadMaxima-1)){//puesto que las ubicaciones de los arr empiezan en 0 y el entra como -1 al add el primer elemento, para que así al entrar como el antepenúltimo, antes de asignar s evuelva el antepenúltimo, lo cual es equivalente al ultimo en el arr xD
+            posicionUltimoElemento++;  
+            elementosPila[posicionUltimoElemento] = elementoNuevo;//a mi parecer solo debe ser el valor y no & porque el arreglo es de tipo normal, pero a él apunta u puntero...              
+        }
     }
 
     template <class T>
-    T* Pila<T>::inspeccionarUltimoElemento(){
-        return &elementosPila[posicionUltimoElemento];            
+    T* Pila<T>::inspeccionarUltimoElemento(){        
+        return &elementosPila[posicionUltimoElemento];//si fuera falso quiere decir que la pila se encuentra llena...                   
     }
 
     template <class T>
@@ -69,7 +65,7 @@ class Pila{
 
     template <class T>
     bool Pila<T>::estaVacia(){
-        if(posicionUltimoElemento==0){
+        if(posicionUltimoElemento==-1){
             return true;
         }
         return false;
@@ -81,13 +77,13 @@ class Pila{
     }
 
     template <class T>
-    int Pila<T>::darNumeroElementosActuales(){
-        return posicionUltimoElemento;
+    int Pila<T>::darNumeroElementosActuales(){//OJO, dice número, NO POSICÓN!
+        return posicionUltimoElemento+1;
     }
 
     template <class T>
     int Pila<T>::estaLlena(){
-        if(posicionUltimoElemento == capacidadMaxima){
+        if(posicionUltimoElemento == (capacidadMaxima-1)){
             return true;
         }
         return false;
@@ -96,7 +92,7 @@ class Pila{
     template <class T>
     Pila<T>::~Pila(){
         delete [] elementosPila;//para borrar el arreglo completo...
-        posicionUltimoElemento=0;
+        posicionUltimoElemento=-1;
         capacidadMaxima = 0;
     }
 
