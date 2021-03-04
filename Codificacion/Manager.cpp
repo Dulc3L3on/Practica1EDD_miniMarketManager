@@ -9,42 +9,46 @@ using namespace std;
         pilaCarretas = new Pila<int>[2]();
     }
   
-    Pila<int>* Manager::prepararCarretas(int numeroCarretas, int carretasOcupadas){//Este numero de carretas es por pila...
+    Pila<int>* Manager::prepararCarretas(int numeroCarretas){//Este numero de carretas es por pila...
 //        Pila<int> pilaCarretas[2];
         //vamos a seguir con esta forma, y si la pila de carretas te presenta errores, entonces lo que harás es declarar una var global privada de tipo puntero y en este método hacer el new Pila<int>[2] y en una linea, incializar el espacio con Pila<int> [puesto que recibe valores normales, puesto que en realidad así es como funcionan los arreglo] y en otra linea la otra ini xD y así devolverás el ptro gobal al arr de las 2 pilas... [recuerda que la sintaxis y forma de "tratamiento" es simi a como lo hiciste en la pila xD, para colocar el arr que almacena sus datos]        
         pilaCarretas[0] = Pila<int>(numeroCarretas);        
         pilaCarretas[1] = Pila<int>(numeroCarretas);
         cout<<endl<<"se crearon las pilas individuales"<<endl;
-        for (int carretaActual = (carretasOcupadas+1); carretaActual <= (numeroCarretas*2); carretaActual++)
-        {            
-            if((carretaActual-carretasOcupadas) <= numeroCarretas){//porque sino se estaría itentando apilar más de lo que puede tener la pila... y es <= porque comienza desde 1 la comparación [de la resta[que es igual a la cdad de carretas acumuladas, a agregar a la pila] y la capacidad xD]
-                pilaCarretas[0].apilar(carretaActual);//puesto que requiero enviar un puntero, y un puntero es practicamente una direción, entonces... mando la dirección xD                
-            }else{
-                pilaCarretas[1].apilar(carretaActual);
-            }           
+        for (int carretaActual = 1; carretaActual <= numeroCarretas; carretaActual++)
+        {                      
+            pilaCarretas[0].apilar(carretaActual);//puesto que requiero enviar un puntero, y un puntero es practicamente una direción, entonces... mando la dirección xD                            
+            pilaCarretas[1].apilar((numeroCarretas+carretaActual));            
         }   
+       // cout<<endl<<"prepararCarretas"<<pilaCarretas;//tb sirvio para corroborar que si se estaba enviando el obj requerido... y así es xD
         return pilaCarretas;
     }//no olvides que cuando quieras devolver un arreglo, lo que debes hacer es devolver su puntero, puesto que este en realidad es uno de estos :0 xD
 
    //La asignación de cajas se hará al repetir el bucle, que se encargue de solicitar los datos, una cdad de veces = al número de cajas solicitado... el numero de repetición actual, corresponderá a la caja que se debe obtener...
         //o en lugar de crear un metodo para buscar en la lista2blemente enlazada, es obtener el primer nodod en este método y conforme vayas dando las vueltas, irias obteniendo la caja en cuestión, de tal forma que no se tenga cada vez empezar el l primera, hasta llegar a la que corresponde... 
         //para ese caso, mejor se va a ir creando cada caja conforme se vaya recibiendo el tiempo, es decir que el #cajas recibido se guardará en la var que servirá coo límite para exe este método, así no hay necesidad de buscar las cajas, puesto que así creo que crearía más trabajo...         
-       
+    
+    int Manager::darCarritoDeCompras(Pila<int> *pilaDeCarretas){
+      //  cout<<endl<<"darCarrito"<<pilaDeCarretas;//esto fue para comprobar que si era el mismo obj que mandaba entre punteros xD
+        if(!pilaDeCarretas[0].estaVacia() && !pilaDeCarretas[1].estaVacia()){//puesto que recibir un puntero es recibir la cabeza de un arreglo xD                
+            cout<<endl<<"ambas pilas con carretas llenas, se escoge al azar"<<endl;                        
+            return pilaDeCarretas[rand()%(2)].desapilarUltimoElemento();//para que se agarre cualquira de las carretas... xD                             
+        }else if(!pilaDeCarretas[0].estaVacia()){                
+            cout<<endl<<"primer pila llena,se desapila carreta"<<endl;
+            return pilaDeCarretas[0].desapilarUltimoElemento();         
+        }else if(!pilaDeCarretas[1].estaVacia()){//Es decir que la 1 está llena [está asegurado este hecho por la condición del while... xD]
+            cout<<endl<<"segunda pila llena, se desapila carreta"<<endl;
+            return pilaDeCarretas[1].desapilarUltimoElemento();//si la var que recibía esto hubiera sido un int norma y no un int ptro, hubieras tenido que colocar el * puesto que el contenido de la pila es un ptro y se requieria un valor, y este * permite realizar la conversión...                
+        }        
+        return -1;//pero me encargaré de que siempre que no haya carretas, en ninguna de las pilas, no se invoque a este método...
+        //bien podría ser 0, pero el -1 da más apariencia de que sucedió un error xD
+    }
+
     void Manager::asignarCarritoCompras(Cola<Cliente> *colaEsperaCarretas, Pila<int> *pilaCarretas, ListaCircular<Cliente> *clientesEnCompras){//recuerda que enviaste un puntero, porque se envia un arreglo, por ello se requiere la dirección del primer elemento...
         while(!colaEsperaCarretas->estaVacia() && (!pilaCarretas[0].estaVacia() || !pilaCarretas[1].estaVacia())){//pues se requiere que al menos 1 de las dos tengan carretas...
-
-            if(!pilaCarretas[0].estaVacia() && !pilaCarretas[1].estaVacia()){//puesto que recibir un puntero es recibir la cabeza de un arreglo xD                
-                colaEsperaCarretas->inspeccionarPrimerElemento()->recogerCarritoCompras(pilaCarretas[rand()%(2)+1].desapilarUltimoElemento());//para que se agarre cualquira de las carretas... xD                 
-                cout<<endl<<"ambas pilas con carretas llenas, se escoge al azar"<<endl;
-            }else if(!pilaCarretas[0].estaVacia()){                
-                colaEsperaCarretas->inspeccionarPrimerElemento()->recogerCarritoCompras(pilaCarretas[0].desapilarUltimoElemento());
-                cout<<endl<<"primer pila llena,se desapila carreta"<<endl;
-            }else if(!pilaCarretas[1].estaVacia()){//Es decir que la 1 está llena [está asegurado este hecho por la condición del while... xD]
-                colaEsperaCarretas->inspeccionarPrimerElemento()->recogerCarritoCompras(pilaCarretas[1].desapilarUltimoElemento());//si la var que recibía esto hubiera sido un int norma y no un int ptro, hubieras tenido que colocar el * puesto que el contenido de la pila es un ptro y se requieria un valor, y este * permite realizar la conversión...
-                cout<<endl<<"segunda pila llena, se desapila carreta"<<endl;
-            }            
+            colaEsperaCarretas->inspeccionarPrimerElemento()->recogerCarritoCompras(darCarritoDeCompras(pilaCarretas));//la condi del while evitará que el método que da los carritos devuelva NULL, por el hecho de que ninguna pila estaba llema...
             
-            cout<<"El cliente "<<colaEsperaCarretas->inspeccionarPrimerElemento()->darIdentificacion()<<" escoge carreta # "<<*(colaEsperaCarretas->inspeccionarPrimerElemento()->darNumeroCarretaCompras())<<endl;//creo que aquí lo que voy a estar mostando será la dirección y no el contendio, lo cual es lo que deseo... pero su recuerdas, cuando en C hiciste esto, tb pensaste que termianrías obteniendo el valor, pero no fue así, y terminaste concluyendo que era porque por default devuelve el valor y si se coloca el & devuelve la dirección, entonces quiere decir que sabe que tipo de evolución debe ahcer según el contexto...
+            cout<<"El cliente "<<colaEsperaCarretas->inspeccionarPrimerElemento()->darIdentificacion()<<" escoge carreta # "<<colaEsperaCarretas->inspeccionarPrimerElemento()->darNumeroCarretaCompras()<<endl;//creo que aquí lo que voy a estar mostando será la dirección y no el contendio, lo cual es lo que deseo... pero su recuerdas, cuando en C hiciste esto, tb pensaste que termianrías obteniendo el valor, pero no fue así, y terminaste concluyendo que era porque por default devuelve el valor y si se coloca el & devuelve la dirección, entonces quiere decir que sabe que tipo de evolución debe ahcer según el contexto...
             clientesEnCompras->anadirAlFinal(colaEsperaCarretas->desencolarPrimerElemento());//y así se agrega a la tienda a cliente par que pueda escoger sus productos xD            
             cout<<endl<<"el cliente ingresa a lista circular de compras"<<endl;
         }
@@ -65,7 +69,8 @@ using namespace std;
 
         for (int clienteCandidatoActual = 1; clienteCandidatoActual <= numero; clienteCandidatoActual++)
         {
-            ubicacionCliente = (rand()%(100)+1);//en realidad debería ser un número desde 0 hasta el tam [pero en las indicaciones 1 a 100], pues sino, no todos tendrán oportunidad de salir en el primer intento
+            //para que el rand de numeros en un rango especifico -> rand()%(HASTA-DESDE+1)+1
+            ubicacionCliente = (rand()%(101-1)+1);//en realidad debería ser un número desde 0 hasta el tam [pero en las indicaciones 1 a 100], pues sino, no todos tendrán oportunidad de salir en el primer intento
             if(ubicacionCliente <= clientesEnCompras->darTamanio()){//puesto que tengo que mostrar un msje...
                 Cliente *cliente = clientesEnCompras->darYEliminarEn(ubicacionCliente);//puesto que lo que devuelve es un puntero...
                 cout<<"Cliente #"<<cliente->darIdentificacion()<<"procede a pagar la compra"<<endl;
@@ -79,8 +84,8 @@ using namespace std;
         {
             NodoDoble<Caja> *nodoAuxiliar = cajas->darPrimerNodo();//por eso el método debe devolver punteros xD
             if(!nodoAuxiliar->darContenido()->estaLibre() && nodoAuxiliar->darContenido()->darTurnosFaltantes()==0){
-                cout<<endl<<"Cliente #"<<nodoAuxiliar->darContenido()->darCliente()->darIdentificacion()<<" sale de la tienda y devuelve carreta #"<<*(nodoAuxiliar->darContenido()->darCliente()->darNumeroCarretaCompras())<<endl;
-                retornarCarritoCompras(pilaCarritosCompras, *(nodoAuxiliar->darContenido()->darCliente()->darNumeroCarretaCompras()));//puesto que al desocupar la caja, se va el cliente y el carrito xD
+                cout<<endl<<"Cliente #"<<nodoAuxiliar->darContenido()->darCliente()->darIdentificacion()<<" sale de la tienda y devuelve carreta #"<<nodoAuxiliar->darContenido()->darCliente()->darNumeroCarretaCompras()<<endl;
+                retornarCarritoCompras(pilaCarritosCompras, nodoAuxiliar->darContenido()->darCliente()->darNumeroCarretaCompras());//puesto que al desocupar la caja, se va el cliente y el carrito xD
                 nodoAuxiliar->darContenido()->desocuparCaja();                
             }
             if(!nodoAuxiliar->darContenido()->estaLibre() && nodoAuxiliar->darContenido()->darTurnosFaltantes()>0){
@@ -93,7 +98,7 @@ using namespace std;
 
     void Manager::retornarCarritoCompras(Pila<int> *pilaCarritosCompras, int codigoCarritoCompras){
         if(!pilaCarritosCompras[0].estaLlena() && !pilaCarritosCompras[1].estaLlena()){
-            pilaCarritosCompras[rand()%(2)+1].apilar(codigoCarritoCompras);
+            pilaCarritosCompras[rand()%(2)].apilar(codigoCarritoCompras);
             cout<<"carreta #"<<codigoCarritoCompras<<"se apila en una de las 2 pilas"<<endl;
         }else if(!pilaCarritosCompras[0].estaLlena()){
             pilaCarritosCompras[0].apilar(codigoCarritoCompras);

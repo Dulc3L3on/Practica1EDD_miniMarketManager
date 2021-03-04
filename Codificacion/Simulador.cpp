@@ -56,8 +56,8 @@ using namespace std;
             
             if(cajaActual< clientesEnCadaEstacion[0]){//para clientes en caja, pongo asi la condición porque supongo que si ingresaron lo que esperaba es decir un #>0 y <= al #de cajas...
                 int idCorrespondiente = cajaActual+1;//Debe crearse cada vez la var, sino lo que se estaría haciendo es cb cada vez el valor, puesto que se almacenaría cada valor nuevo en la misma dirección...
-                listadoCajas->darUltimoElemento()->agregarCliente(new Cliente(idCorrespondiente));//puesto que los primeros clientes se tomarán como los primeros en llegar a la caja, por lo tanto estos tienen el mismo id que el de las cajas...
-                listadoCajas->darUltimoElemento()->darCliente()->recogerCarritoCompras(&idCorrespondiente);//puesto que son las primeras carretas, por lo cual tiene los primeros id's xD
+                listadoCajas->darUltimoElemento()->agregarCliente(new Cliente(idCorrespondiente));//puesto que los primeros clientes se tomarán como los primeros en llegar a la caja, por lo tanto estos tienen el mismo id que el de las cajas...                
+                listadoCajas->darUltimoElemento()->darCliente()->recogerCarritoCompras(manager->darCarritoDeCompras(pilaCarretas));//puesto que son las primeras carretas, por lo cual tiene los primeros id's xD
             }
         }   
         cout<<endl<<"se añadieron todas las cajas"<<endl;     
@@ -71,13 +71,13 @@ using namespace std;
             if(clienteCreadoEnEstacion <= clientesEnCadaEstacion[1]){//para clientes en cola de pagos
                 int idCorrespondiente = clientesEnCadaEstacion[0]+clienteCreadoEnEstacion;
                 colaPago->encolar(new Cliente(idCorrespondiente));//pues así se puede lograr el id acumulado
-                colaPago->inspeccionarPrimerElemento()->recogerCarritoCompras(&idCorrespondiente);//aunque si mal no recuerdo, estos métodos de los punteros, no son utiles para asignar sino solo para dar, a pesar de que el obj que almacena, posea el setter respectivo...
+                colaPago->inspeccionarPrimerElemento()->recogerCarritoCompras(manager->darCarritoDeCompras(pilaCarretas));//aunque si mal no recuerdo, estos métodos de los punteros, no son utiles para asignar sino solo para dar, a pesar de que el obj que almacena, posea el setter respectivo...
                 cout<<endl<<"se encolo a "<<idCorrespondiente<<" en cola de pagos"<<endl;
             }
             if(clienteCreadoEnEstacion<= clientesEnCadaEstacion[2]){//para clientes escogiendo productos
                 int idCorrespondiente = clientesEnCadaEstacion[0]+clientesEnCadaEstacion[1]+clienteCreadoEnEstacion;
                 clientesComprando->anadirAlFinal(new Cliente(idCorrespondiente));
-                clientesComprando->darUltimoElemento()->recogerCarritoCompras(&idCorrespondiente);
+                clientesComprando->darUltimoElemento()->recogerCarritoCompras(manager->darCarritoDeCompras(pilaCarretas));
                 cout<<endl<<idCorrespondiente<<" procede a escoger sus productos"<<endl;
             }
         }        
@@ -109,10 +109,11 @@ using namespace std;
     void Simulador::simularMiniMarket(){
         solicitarDatosInmutables();        
         solicitarTiempoCajas();
+        pilaCarretas = (manager->prepararCarretas(numeroCarretas));//se toma como suposicón que los clientes que se encuentran en las otras partes de la tienda, NO sobrepasan el # de carretas existentes...
+        //cout<<"asignacion"<<pilaCarretas;//tb sirvio para comprobar que era el mismo obj referido
         solicitarClientesEnCadaEstacion();
         asignarClientesEnCadaEstacion();
-
-        pilaCarretas = manager->prepararCarretas(numeroCarretas, (clientesEnCadaEstacion[0]+clientesEnCadaEstacion[1]+clientesEnCadaEstacion[2]));
+        
         cout<<endl<<"se apilaron las carretas"<<endl;
         int numeroClientes = solicitarNumeroClientes();
 
