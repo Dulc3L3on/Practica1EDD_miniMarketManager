@@ -57,16 +57,29 @@ class listaEnlazada
             tamanio++;
             cout<<"\tse añadio al primer nodo"<<endl;
         }else{
-            Nodo<T> *nuevoNodo = new Nodo<T>(elemento);            
-            cout<<"\tse creo al nuevo ultimo nodo"<<endl;
+            /*otra forma de hacerlo, debido a que no se tiene un anterior es 
+                crear un nodo aux para el ultimo nodo
+                asignarle el siguiente a ese nodo y en los () hacer de una vez la instanciacion para no tener que crear una var... aunque no se si al no crear una var, daria problemas al almacenar la dir a la que se hará ref, o aun así le crea una dirección, solo que relacionada de una vez con el obj en el que se añadio directamente? xD
+            */
+
+            Nodo<T> *nuevoNodoAnterior = ultimoNodo;
+            cout<<"\tse guarda ultimo nodo"<<endl;
+            Nodo<T> *nuevoUltimo =  new Nodo<T>(elemento, NULL);
+            nuevoNodoAnterior->establecerElSiguiente(nuevoUltimo);            
+            cout<<"\tse estalece nodo siguiente"<<endl;
+            ultimoNodo = nuevoUltimo;
+            cout<<"\tse actualiza ultimo nodo"<<endl;                     
+
+            /*Nodo<T> *nuevoNodo = new Nodo<T>(elemento);            
+            cout<<"\tse creo al nuevo ultimo nodo"<<endl;*/
             /*Nodo<T> *nodoSiguienteAntiguoUltimo = ultimoNodo->obtenerElSiguiente();
-            nodoSiguienteAntiguoUltimo = nuevoNodo;*/
+            nodoSiguienteAntiguoUltimo = nuevoNodo;*///Este minibloque era de una prueba super antigua...
         
-            ultimoNodo->establecerElSiguiente(nuevoNodo);
+            /*ultimoNodo->establecerElSiguiente(nuevoNodo);
             cout<<"\tse establece al nuevo siguiente"<<endl;
 
             ultimoNodo = nuevoNodo;//para darle seguimiento a la lista...
-            cout<<"\tse reestablece al ultimo nodo"<<endl;
+            cout<<"\tse reestablece al ultimo nodo"<<endl;*/
             tamanio++;            
         }
     }
@@ -84,13 +97,20 @@ class listaEnlazada
     template <class T>
     T* listaEnlazada<T>::darYEliminarPrimerElemento(){//esto es para la cola...
         if(tamanio>0){                 
-            Nodo<T> *nodoAuxiliar = primerNodo;
-            T *elementoAEliminar = nodoAuxiliar->darContenido();
-            delete primerNodo;//Aquí se borró el contenido antrior del 1er nodo antes de asignarle el nuevo, a diferencia del método para eliminar el último esto lo digo porque solo se elimina la referncia del nodo temporla auxilar... [aunque no debería hacerse porque desaparee al terminar el contexto del método...], pues se asgina de una vez el nuevo valor en lugar de estar borrado, aunque creo que si hay qie borrar porque sino no se libera la memoria...
+            Nodo<T> *nodoAuxiliar = primerNodo->obtenerElSiguiente();//al solo haber 1 elemento, este será NULL, o mejor dicho apuntará a NULL xD
+            cout<<"\tse guarda sig del 1er nodo"<<endl;
+            T *elementoAEliminar = primerNodo->darContenido();            
+            //delete primerNodo;//Aquí se borró el contenido antrior del 1er nodo antes de asignarle el nuevo, a diferencia del método para eliminar el último esto lo digo porque solo se elimina la referncia del nodo temporla auxilar... [aunque no debería hacerse porque desaparee al terminar el contexto del método...], pues se asgina de una vez el nuevo valor en lugar de estar borrado, aunque creo que si hay qie borrar porque sino no se libera la memoria...
+            //este delete daba error, sucedia a pesar de que el nodo auxiliar poseyera al mismo 1er nodo o a su siguiente, deplano que es por el hecho de que el nodo uxiliar obtiene de manera indirecta todos los enlaces, entonces al hacer la actualización del nuevo nodo, ya no hay una refrenencia "permanente" hacia el antiguo nodo primero, por ello al eli el nodo auxi [esto por medio del compi de C++ cuando termina el funcionamiento del método en cuestión] por el hecho de que ya no existe una ref "permanente", al eli sus ref indirectas obtenidas al hacer la =, se borra permanentemente al primer nodo. entonces ese error era porque se estaba liberando 2, 1. manualmente y otra por el metodo al eli al auxi y sus ref [y para ese entonces ya no poseia nada ese 1er nodo] por terminar el stack del metodo en cuestion.... Por ello hay que borrar el delete, pues el metodo se encargará de hacerlo xD
+            cout<<"\tse elimina el antiguo primer nodo"<<endl;
 
-            primerNodo = nodoAuxiliar->obtenerElSiguiente();
-            delete nodoAuxiliar;            
-            tamanio--;
+//            if(tamanio>1){
+                primerNodo = nodoAuxiliar;
+                cout<<"\tse establece el nuevo primer nodo"<<endl;
+//            }//para evitar enviar un null a un ptro que ya tenia contenido NULL :v xD
+            
+            /*delete nodoAuxiliar;*///no se borra al nodoAux puesto que es un a var local...
+            tamanio--;            
             return elementoAEliminar;//recuerdate que al enviar esto, lo que estás mandando es la dir, por lo cual al querer acceder al contenido deberás colocar el * en la clase que emplee la listaEnlazada...
         }
         return NULL;

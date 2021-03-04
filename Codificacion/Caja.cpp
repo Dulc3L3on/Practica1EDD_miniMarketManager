@@ -35,9 +35,10 @@ using namespace std;
     }
         
     void Caja::desocuparCaja(){
-        delete &clienteActual;//ya que no es un puntero, entonces mando a dirección, pues eso es lo que devuelve un ptr por default xD
-        estaDesocupada = true;//PUESTO que los turnos faltantes ya eseta en 0, solo faltaba hacer esto xD
-    }//así ya no 
+        delete clienteActual;//ya que no es un puntero, entonces mando a dirección, pues eso es lo que devuelve un ptr por default xD
+        estaDesocupada = true;
+        //PUESTO que los turnos faltantes ya estan en 0, solo faltaba hacer esto, para dejar la caja lista para un proximo cliente... xD
+    }
 
     bool Caja::estaLibre(){
         return estaDesocupada;

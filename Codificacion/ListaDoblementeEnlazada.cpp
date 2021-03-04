@@ -117,7 +117,7 @@ class ListaDoblementeEnlazada{//lista xD creo jajaja xD, BIEN YA xD
                 delete ultimoNodo;//pues solo tenía un elemento, entonces alusar esto la lista se quedó vacía...
             }
           
-            delete nodoAuxiliar;                        
+            //no se borran los nodos auxiliares porque estos son locales, entonces C++ se encarga de desaparecerlos!               
             tamanio--;
             return elementoAEliminar;
         }
@@ -165,7 +165,8 @@ class ListaDoblementeEnlazada{//lista xD creo jajaja xD, BIEN YA xD
             delete nodoSubAuxiliar;
         }//for por medio del cual liberameos la memoria hasta el penúltimo nodo...                       
 
-        delete nodoAuxiliar;//se libera el espacio del penúltimo Nodo...
+        //los nodos auxiliares son locales, por lo cual no requieren ser eliminados, pues de eso se encarga el compi de C++
+        /*delete nodoAuxiliar;//se libera el espacio del penúltimo Nodo...*/
         delete ultimoNodo;
         tamanio = 0;
     }

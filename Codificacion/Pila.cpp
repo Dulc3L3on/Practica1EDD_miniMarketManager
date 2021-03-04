@@ -57,7 +57,7 @@ class Pila{
         T *valorAEliminar = &elementosPila[posicionUltimoElemento];//para que así pueda recibir el valor el puntero...
         //elementosPila[posicionUltimoElemento] = 0;//Pero a ligual que en el caso del método para apilar, solo sería correcto hacer esto para valores de tipo numéricos...
         //yo digo que el delete funciona para cualquier tipo de dato... y de ser así, entonces se ha garantizado que este método podra app a sin importar que tipo de valor sea el que almacene la pila...
-        delete &elementosPila[posicionUltimoElemento];
+        /*delete &elementosPila[posicionUltimoElemento];*///con respecto a esto, lo que se me ocurre, es que reemplaces lo valores, cuando toque apilar nuevos elementos, en este caso como sé que serán valores int, entonces no habrá problema con hacer esto, pero con cualquier otro valor que no sea primitivo, sí daría problema, pues estarías dejando "basura" en la memoria, puesto que eso que quedó en ese espacio ya no es nec luego de finalizada la exe del programa en cuestión...
 
         posicionUltimoElemento--;
         return valorAEliminar;
@@ -78,7 +78,7 @@ class Pila{
 
     template <class T>
     int Pila<T>::darNumeroElementosActuales(){//OJO, dice número, NO POSICÓN!
-        return posicionUltimoElemento+1;
+        return (posicionUltimoElemento+1);
     }
 
     template <class T>
