@@ -94,7 +94,7 @@ class listaEnlazada
         return ultimoNodo->darContenido();
     }
 
-    template <class T>
+    template <class T>//Empleado por la COLA
     T* listaEnlazada<T>::darYEliminarPrimerElemento(){//esto es para la cola...
         if(tamanio>0){                 
             Nodo<T> *nodoAuxiliar = primerNodo->obtenerElSiguiente();//al solo haber 1 elemento, este será NULL, o mejor dicho apuntará a NULL xD
@@ -104,10 +104,9 @@ class listaEnlazada
             //este delete daba error, sucedia a pesar de que el nodo auxiliar poseyera al mismo 1er nodo o a su siguiente, deplano que es por el hecho de que el nodo uxiliar obtiene de manera indirecta todos los enlaces, entonces al hacer la actualización del nuevo nodo, ya no hay una refrenencia "permanente" hacia el antiguo nodo primero, por ello al eli el nodo auxi [esto por medio del compi de C++ cuando termina el funcionamiento del método en cuestión] por el hecho de que ya no existe una ref "permanente", al eli sus ref indirectas obtenidas al hacer la =, se borra permanentemente al primer nodo. entonces ese error era porque se estaba liberando 2, 1. manualmente y otra por el metodo al eli al auxi y sus ref [y para ese entonces ya no poseia nada ese 1er nodo] por terminar el stack del metodo en cuestion.... Por ello hay que borrar el delete, pues el metodo se encargará de hacerlo xD
             cout<<"\tse elimina el antiguo primer nodo"<<endl;
 
-//            if(tamanio>1){
-                primerNodo = nodoAuxiliar;
-                cout<<"\tse establece el nuevo primer nodo"<<endl;
-//            }//para evitar enviar un null a un ptro que ya tenia contenido NULL :v xD
+            primerNodo = nodoAuxiliar;
+            cout<<"\tse establece el nuevo primer nodo"<<endl;
+            //no es obligatorio eli el último cuando la lista solo tenga 1, pues de todos modos la var de la posición llegaría a 0 por lo cual se tomaría como que está vacía, pero si esto no se hace simplemente quedaría "flotando" la inst a la que apuntaba, así que SÍ, mejor hazlo!, mejor no xD, jajaja porque por lo que logré observar cuando me dio el "free() double", si se borra lo que contiene la dir que almacena el puntero...
             
             /*delete nodoAuxiliar;*///no se borra al nodoAux puesto que es un a var local...
             tamanio--;            
@@ -116,7 +115,7 @@ class listaEnlazada
         return NULL;
     }//por ser el primero y no tener noción del anterior, entonces para este caso, al momneto de eliminar, basta con que se elimine el contenido del "primerNodo", pues es el único por medio del cual puede hacerse referencia a dichp nodo...
 
-    template <class T>
+    template <class T>//no utilizado [pero debe arreglarse, tomando como guía la forma en la que se trabajó la eli del 1ro...]
     T* listaEnlazada<T>::darYEliminarUltimoElemento(){//Esto es para la pila...
         if(tamanio>0){            
             T *elementoAEliminar = ultimoNodo->darContenido();

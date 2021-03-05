@@ -110,11 +110,11 @@ using namespace std;
         solicitarDatosInmutables();        
         solicitarTiempoCajas();
         pilaCarretas = (manager->prepararCarretas(numeroCarretas));//se toma como suposicón que los clientes que se encuentran en las otras partes de la tienda, NO sobrepasan el # de carretas existentes...
+        cout<<endl<<"se apilaron las carretas"<<endl;
         //cout<<"asignacion"<<pilaCarretas;//tb sirvio para comprobar que era el mismo obj referido
         solicitarClientesEnCadaEstacion();
-        asignarClientesEnCadaEstacion();
+        asignarClientesEnCadaEstacion();      
         
-        cout<<endl<<"se apilaron las carretas"<<endl;
         int numeroClientes = solicitarNumeroClientes();
 
         while(numeroClientes>-1){//con el >-1 justo se hace lo que deseo, es decir que pueda ingresar cualquier numero de clientes menos aquello valores irracionales [<0...], esto porque aunque no ingresen cientes, tendría que mostrar "no entraron cleintes", "nadie comprando", "sin cola de pagos", dependiendo de que estructura que almacena los clientes esté vacía xD

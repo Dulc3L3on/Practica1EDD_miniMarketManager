@@ -37,7 +37,7 @@ class NodoDoble {
 
     template <class T>
     void NodoDoble<T>::establecerNodoSiguiente(NodoDoble<T> *elNodoSiguiente){
-        nodoAnterior = elNodoSiguiente;
+        nodoSiguiente = elNodoSiguiente;
     }
 
     template <class T>
@@ -47,7 +47,7 @@ class NodoDoble {
 
     template <class T>
     NodoDoble<T>* NodoDoble<T>::obtenerElAnterior(){
-        return nodoSiguiente;
+        return nodoAnterior;
     }
 
     template <class T>
@@ -58,6 +58,7 @@ class NodoDoble {
     template <class T>
     NodoDoble<T>::~NodoDoble<T>(){//el destructor
         delete nodoSiguiente;
+        delete nodoAnterior;//no creo que de problemas si la lista está vacía :v xD
     }
 
 #endif//no se si va aquí [al fianl de todo si es que no existe un archivo h y cpp de una misma "clase"... tal y como sucede aquí...] o al final de la clase...

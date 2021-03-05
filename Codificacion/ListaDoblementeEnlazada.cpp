@@ -104,19 +104,20 @@ class ListaDoblementeEnlazada{//lista xD creo jajaja xD, BIEN YA xD
         return ultimoNodo->darContenido();
     }
 
-    template <class T>
+    template <class T>//no utilizado, puesto que las cajas no requeiren de eliminación xD
     T* ListaDoblementeEnlazada<T>::darYEliminarPrimerElemento(){
         if(tamanio>0){
             NodoDoble<T> *nodoAuxiliar = primerNodo;//Debe ser así por el hecho de que la lista puede llegar a tener un solo elemento...
             T *elementoAEliminar = nodoAuxiliar->darContenido();
-            delete primerNodo;//Aquí se borró el contenido antrior del 1er nodo antes de asignarle el nuevo, a diferencia del método para eliminar el último esto lo digo porque solo se elimina la referncia del nodo temporla auxilar... [aunque no debería hacerse porque desaparee al terminar el contexto del método...], pues se asgina de una vez el nuevo valor en lugar de estar borrado, aunque creo que si hay qie borrar porque sino no se libera la memoria...
+            //delete primerNodo;//Aquí se borró el contenido antrior del 1er nodo antes de asignarle el nuevo, a diferencia del método para eliminar el último esto lo digo porque solo se elimina la referncia del nodo temporla auxilar... [aunque no debería hacerse porque desaparee al terminar el contexto del método...], pues se asgina de una vez el nuevo valor en lugar de estar borrado, aunque creo que si hay qie borrar porque sino no se libera la memoria...
+            //NO SE DEBE HACER, porque esta var pierde la ref al antig contenido y el unico ptro que refuere a este es un termporal, el cual se encarga de eliminarlo el compi de C++            
 
             if(tamanio>1){
                 nodoAuxiliar->obtenerElSiguiente()->establecerNodoAnterior(NULL);//puesto que pasa a ser el primero..
                 primerNodo = nodoAuxiliar->obtenerElSiguiente();//pues no tiene sentido hacerlo si el siguiente es nulo :v
-            }else{
+            }/*else{
                 delete ultimoNodo;//pues solo tenía un elemento, entonces alusar esto la lista se quedó vacía...
-            }
+            }*///no debe hacerse pues de esto se encarga el compi de C++, puesto que la única var que hace referencia a la dir que almacenaba el 1er puntero es la temporla, la cual se elimina al terminar el stack de esta función xD
           
             //no se borran los nodos auxiliares porque estos son locales, entonces C++ se encarga de desaparecerlos!               
             tamanio--;
@@ -125,7 +126,7 @@ class ListaDoblementeEnlazada{//lista xD creo jajaja xD, BIEN YA xD
         return NULL;
     }//NICE...
 
-    template <class T>
+    template <class T>//no utilizado, por la misma razón que la eli del 1ro
     T* ListaDoblementeEnlazada<T>::darYEliminarUltimoElemento(){//Debe ser así por el hecho de que la lista puede llegar a tener un solo elemento...
         if(tamanio>0){
             /*NodoDoble<T> *nodoAEliminar = ultimoNodo;
@@ -144,10 +145,10 @@ class ListaDoblementeEnlazada{//lista xD creo jajaja xD, BIEN YA xD
                 delete nodoAuxiliar->obtenerElSiguiente();//liberando ultimo ultimo nodo, puesto que los punteros no pueden hacerse null... creo xD                
                 nodoAuxiliar->establecerNodoSiguiente(NULL);//puesto que pasa a ser el ultimo...
                 ultimoNodo = nodoAuxiliar;
-            }else{
+            }/*else{
                 delete ultimoNodo;
                 delete primerNodo;                
-            }
+            }*///doblemente NO debe hacerse esto puesto que la unica var que hace referencia a la dir que almacenaba el ultimo nodo es la temrpoarl, la cual se elimina por medio del compi de C++...
             
             tamanio--;
             return elementoAEliminar;

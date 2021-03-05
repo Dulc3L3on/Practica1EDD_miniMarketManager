@@ -64,14 +64,15 @@ using namespace std;
     }//este es para dar las carretas a los clientes, no para colocar el # de carretas solicitadas en la pila...
       
     void Manager::enviarColaPago(ListaCircular<Cliente> *clientesEnCompras, Cola<Cliente> *colaDePagos){
-        int numero = rand()%(clientesEnCompras->darTamanio())+1;//De tal forma que tenga oportunidad de sair todos los clientes en una misma ronda, se escoge una cantidad de clientes existentes a sacar... si no hay de todos modos no harbá problema porque tengo una revisión de si ese valor es <= al tamaño...
+        int numero = rand()%(clientesEnCompras->darTamanio()+1)+1;//De tal forma que tenga oportunidad de sair todos los clientes en una misma ronda, se escoge una cantidad de clientes existentes a sacar... si no hay de todos modos no harbá problema porque tengo una revisión de si ese valor es <= al tamaño...
         int ubicacionCliente = 0;
 
         for (int clienteCandidatoActual = 1; clienteCandidatoActual <= numero; clienteCandidatoActual++)
         {
             //para que el rand de numeros en un rango especifico -> rand()%(HASTA-DESDE+1)+1
             ubicacionCliente = (rand()%(101-1)+1);//en realidad debería ser un número desde 0 hasta el tam [pero en las indicaciones 1 a 100], pues sino, no todos tendrán oportunidad de salir en el primer intento
-            if(ubicacionCliente <= clientesEnCompras->darTamanio()){//puesto que tengo que mostrar un msje...
+            if(ubicacionCliente <= clientesEnCompras->darTamanio()){//puesto que tengo que mostrar un msje...                
+                cout<<endl<<"se intenta enviar a "<<ubicacionCliente<<" cola de pago"<<endl;
                 Cliente *cliente = clientesEnCompras->darYEliminarEn(ubicacionCliente);//puesto que lo que devuelve es un puntero...
                 cout<<"Cliente #"<<cliente->darIdentificacion()<<"procede a pagar la compra"<<endl;
                 colaDePagos->encolar(cliente);//De esta forma se da el cliente que fue escogido por medio del "azar"
@@ -80,19 +81,23 @@ using namespace std;
     }//aquí se generará la cdad aleatoria de intentos a realizar para add clientes a la cola de pago [la cual es una var global...]
 
     void Manager::realizarProcesoPago(ListaDoblementeEnlazada<Caja> *cajas, Cola<Cliente> *colaPagos, Pila<int> *pilaCarritosCompras){
+        NodoDoble<Caja> *nodoAuxiliar = cajas->darPrimerNodo();//por eso el método debe devolver punteros xD
+        
         for (int cajaActual = 0; cajaActual < cajas->darTamanio(); cajaActual++)
-        {
-            NodoDoble<Caja> *nodoAuxiliar = cajas->darPrimerNodo();//por eso el método debe devolver punteros xD
+        {         
             if(!nodoAuxiliar->darContenido()->estaLibre() && nodoAuxiliar->darContenido()->darTurnosFaltantes()==0){
                 cout<<endl<<"Cliente #"<<nodoAuxiliar->darContenido()->darCliente()->darIdentificacion()<<" sale de la tienda y devuelve carreta #"<<nodoAuxiliar->darContenido()->darCliente()->darNumeroCarretaCompras()<<endl;
                 retornarCarritoCompras(pilaCarritosCompras, nodoAuxiliar->darContenido()->darCliente()->darNumeroCarretaCompras());//puesto que al desocupar la caja, se va el cliente y el carrito xD
                 nodoAuxiliar->darContenido()->desocuparCaja();                
-            }
-            if(!nodoAuxiliar->darContenido()->estaLibre() && nodoAuxiliar->darContenido()->darTurnosFaltantes()>0){
+            }else if(!nodoAuxiliar->darContenido()->estaLibre() && nodoAuxiliar->darContenido()->darTurnosFaltantes()>0){
                 nodoAuxiliar->darContenido()->decrementarTiempoRestante();
-            }if(nodoAuxiliar->darContenido()->estaLibre() && !colaPagos->estaVacia()){
+                cout<<endl<<nodoAuxiliar->darContenido()->darTurnosFaltantes()<<" turnos faltantes para Caja#"<<nodoAuxiliar->darContenido()->darCodigo()<<endl;
+            }else if(nodoAuxiliar->darContenido()->estaLibre() && !colaPagos->estaVacia()){
                 nodoAuxiliar->darContenido()->agregarCliente(colaPagos->desencolarPrimerElemento());//Se elimina al primer cliente en espera de la cola de pagos y se le asigna en una caja...
-            }    
+                cout<<endl<<"Caja#"<<nodoAuxiliar->darContenido()->darCodigo()<<"recibe a Cliente "<<nodoAuxiliar->darContenido()->darCliente()->darIdentificacion()<<endl;
+            }              
+            nodoAuxiliar = nodoAuxiliar->obtenerElSiguiente();
+            cout<<"codigo caja siguiente"<<nodoAuxiliar->darContenido()->darCodigo();
         }               
     }
 

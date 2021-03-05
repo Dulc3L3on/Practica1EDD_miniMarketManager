@@ -45,7 +45,7 @@ class Cola{
 
     template <class T>
     T* Cola<T>:: desencolarPrimerElemento(){        
-        cout<<"\tse intenta eliminar 1er nodo"<<endl;
+        cout<<"\t->se intenta eliminar 1er nodo"<<endl;
         return elementosCola->darYEliminarPrimerElemento();
     }
 
