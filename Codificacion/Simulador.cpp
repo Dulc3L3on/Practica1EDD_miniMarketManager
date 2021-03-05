@@ -18,9 +18,9 @@ using namespace std;
     }
 
     void Simulador::solicitarDatosInmutables(void){//Es decir el numero de carretas [que app para cada pila] y el numero de cajas, que será útil para el método en el que solicita el tiempo de las cajas...
-        cout<<endl<<"Ingrese #carretas/pila disponibles: ";//por pila
+        cout<<endl<<"> Ingrese #carretas/pila disponibles: ";//por pila
         cin>>numeroCarretas;//yo creo que si mal no estoy, este hace la conversión por si solo...
-        cout<<endl<<"Ingrese #cajas de cobro: ";
+        cout<<endl<<"> Ingrese #cajas de cobro: ";
         cin>>numeroCajas;
     }       
 
@@ -29,19 +29,19 @@ using namespace std;
 
         for (int numeroCaja = 1; numeroCaja <= numeroCajas; numeroCaja++)
         {
-            cout<<endl<<"Ingrese turnos/cliente caja #"<<numeroCaja<<": ";
+            cout<<endl<<"> Ingrese turnos/cliente caja #"<<numeroCaja<<": ";
             scanf("%d", &duracionAtencion[numeroCaja-1]);        
         }               
     }   
 
     void Simulador::solicitarClientesEnCadaEstacion(void){//supondremos que el # de carretas siempre será > 0, lo que si no supodremos es que sea > al # de cajas de cobro, por si acaso xD, aunque sí debería ser así... :v xD
-        cout<<endl<<"Cuantos clientes de 0 a "<<(((numeroCarretas*2)>=numeroCajas)?numeroCajas:(numeroCarretas*2))<<" estan pagando? ";
+        cout<<endl<<"> Cuantos clientes de 0 a "<<(((numeroCarretas*2)>=numeroCajas)?numeroCajas:(numeroCarretas*2))<<" estan pagando? ";
         scanf("%d", &clientesEnCadaEstacion[0]);
         if(((numeroCarretas*2)-clientesEnCadaEstacion[0])>0){
-            cout<<endl<<"Cuantos clientes de 0 a "<<((numeroCarretas*2)-clientesEnCadaEstacion[0])<<" estan en cola de pagos? ";
+            cout<<endl<<"> Cuantos clientes de 0 a "<<((numeroCarretas*2)-clientesEnCadaEstacion[0])<<" estan en cola de pagos? ";
             scanf("%d", &clientesEnCadaEstacion[1]);
             if(((numeroCarretas*2)-clientesEnCadaEstacion[0]-clientesEnCadaEstacion[1])>0){
-                cout<<endl<<"Cuantos clientes de 0 a "<<((numeroCarretas*2)-clientesEnCadaEstacion[0]-clientesEnCadaEstacion[1])<<" escogen productos? ";
+                cout<<endl<<"> Cuantos clientes de 0 a "<<((numeroCarretas*2)-clientesEnCadaEstacion[0]-clientesEnCadaEstacion[1])<<" escogen productos? ";
                 scanf("%d", &clientesEnCadaEstacion[2]);
             }
         }
@@ -61,7 +61,7 @@ using namespace std;
                 listadoCajas->darUltimoElemento()->darCliente()->recogerCarritoCompras(manager->darCarritoDeCompras(pilaCarretas));//puesto que son las primeras carretas, por lo cual tiene los primeros id's xD
             }
         }   
-        cout<<endl<<"se añadieron todas las cajas"<<endl;     
+        cout<<endl<<"\t-Se añadieron todas las cajas-"<<endl;     
     } 
 
     void Simulador::asignarClientesEnCadaEstacion(void){//INSIDE "solicitarClientesEnCadaEstacion", antes, ahora está afuera...xD
@@ -84,13 +84,13 @@ using namespace std;
                 cout<<endl<<idCorrespondiente<<" procede a escoger sus productos"<<endl;
             }
         }        
-        cout<<"se terminaron de añadir a los clientes en cada estación"<<endl;
+        cout<<endl<<"\t-Se añadieron todos los clientes a cada estación-"<<endl;
     }
 
     int Simulador::solicitarNumeroClientes(void){
-        cout<<endl<<endl<<"........---------- RONDA: "<<(rondaActual++)<<" ------------........"<<endl<<endl;//coloco después el ++ porque así se manda el valor que tiene la var en ese momento y luego se incre...
+        cout<<endl<<endl<<"   ...........------------ RONDA: "<<(rondaActual++)<<" --------------..........."<<endl<<endl;//coloco después el ++ porque así se manda el valor que tiene la var en ese momento y luego se incre...
         int clientesNuevos;
-        cout<<endl<<"Ingrese cantidad clientes nuevos: ";
+        cout<<endl<<"> Ingrese cantidad clientes nuevos: ";
         cin>>clientesNuevos;
         return clientesNuevos;//El dato que hayan ingresado xD
     }
@@ -111,7 +111,7 @@ using namespace std;
         solicitarDatosInmutables();        
         solicitarTiempoCajas();
         pilaCarretas = (manager->prepararCarretas(numeroCarretas));//se toma como suposicón que los clientes que se encuentran en las otras partes de la tienda, NO sobrepasan el # de carretas existentes...
-        cout<<endl<<"se apilaron las carretas"<<endl;
+        cout<<endl<<"\t-Se apilaron las carretas-"<<endl;
         //cout<<"asignacion"<<pilaCarretas;//tb sirvio para comprobar que era el mismo obj referido
         solicitarClientesEnCadaEstacion();
         asignarClientesEnCadaEstacion();      
@@ -119,14 +119,23 @@ using namespace std;
         int numeroClientes = solicitarNumeroClientes();
 
         while(numeroClientes>-1){//con el >-1 justo se hace lo que deseo, es decir que pueda ingresar cualquier numero de clientes menos aquello valores irracionales [<0...], esto porque aunque no ingresen cientes, tendría que mostrar "no entraron cleintes", "nadie comprando", "sin cola de pagos", dependiendo de que estructura que almacena los clientes esté vacía xD
+            cout<<endl<<"\t\t- INICIO -"<<endl;
+            cout<<"\t    add clientes nuevos"<<endl<<endl;
             agregarClientes(numeroClientes);
-            cout<<endl<<"fin de la add de clientes nuevos"<<endl;
+            cout<<endl<<"\t\t- FIN -"<<endl;
+            cout<<endl<<"\t\t- INICIO -"<<endl;
+            cout<<"       asignacion carritos de compras"<<endl<<endl;
             manager->asignarCarritoCompras(colaEsperaCarretas, pilaCarretas, clientesComprando);//ahi revisas si solo era de asignar esto o había que hacer algo más...
-            cout<<endl<<"fin asignacion carritos de compras"<<endl;
+            cout<<endl<<"\t\t- FIN -"<<endl;
+            cout<<endl<<"\t\t- INICIO -"<<endl;
+            cout<<"        agregacion a cola de pago"<<endl<<endl;
             manager->enviarColaPago(clientesComprando, colaPago);
-            cout<<endl<<"fin add a cola de pago"<<endl;
+            cout<<endl<<"\t\t- FIN -"<<endl;
+            cout<<endl<<"\t\t- INICIO -"<<endl;
+            cout<<"\t    proceso de cobro"<<endl<<endl;
             manager->realizarProcesoPago(listadoCajas, colaPago, pilaCarretas);        
-            cout<<endl<<"fin proceso de cobro"<<endl;
+            cout<<endl<<"\t\t- FIN -"<<endl;
             numeroClientes = solicitarNumeroClientes();
         }
+        cout<<endl<<"\t\t\t--Vuelve pronto :3--"<<endl;
     }

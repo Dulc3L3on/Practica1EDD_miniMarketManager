@@ -46,7 +46,7 @@ class Pila{
     void Pila<T>::apilar(T elementoNuevo){//para así recibir la posición del número... si no da, entonces lo que se hará es que al devolver el ID de los carritos, se devuelva la dirección de estos vals... y con eso problema resoluto xD, es decir que se recibirán en esta clase valores normales y se devolverán las direcciones de esos valores...       
         if(posicionUltimoElemento<(capacidadMaxima-1)){//puesto que las ubicaciones de los arr empiezan en 0 y el entra como -1 al add el primer elemento, para que así al entrar como el antepenúltimo, antes de asignar s evuelva el antepenúltimo, lo cual es equivalente al ultimo en el arr xD
             posicionUltimoElemento++;  
-            cout<<"\telemento add: "<<elementoNuevo<<endl;
+//A            cout<<"\telemento add: "<<elementoNuevo<<endl;
             elementosPila[posicionUltimoElemento] = elementoNuevo;//a mi parecer solo debe ser el valor y no & porque el arreglo es de tipo normal, pero a él apunta u puntero...              
         }
     }
@@ -59,7 +59,7 @@ class Pila{
     template <class T>
     T Pila<T>::desapilarUltimoElemento(){        
         posicionUltimoElemento--;
-        cout<<"\telemento desapilado: "<<elementosPila[posicionUltimoElemento+1]<<endl;
+//A        cout<<"\telemento desapilado: "<<elementosPila[posicionUltimoElemento+1]<<endl;
         return elementosPila[posicionUltimoElemento+1];//para que así pueda recibir el valor el puntero...
         /*delete &elementosPila[posicionUltimoElemento];*///con respecto a esto, lo que se me ocurre, es que reemplaces lo valores, cuando toque apilar nuevos elementos, en este caso como sé que serán valores int, entonces no habrá problema con hacer esto, pero con cualquier otro valor que no sea primitivo, sí daría problema, pues estarías dejando "basura" en la memoria, puesto que eso que quedó en ese espacio ya no es nec luego de finalizada la exe del programa en cuestión...
     }

@@ -65,14 +65,14 @@ class ListaCircular{//lista xD creo jajaja xD, BIEN YA xD
             tamanio++;
         }else{
             NodoDoble<T> *nuevoNodoAnterior = ultimoNodo;
-            cout<<"\t->se guarda ultimo nodo"<<endl;
+//A            cout<<"\t->se guarda ultimo nodo"<<endl;
             NodoDoble<T> *nuevoUltimo =  new NodoDoble<T>(elemento, NULL);
             nuevoUltimo->establecerNodoAnterior(nuevoNodoAnterior);
-            cout<<"\tse establece nodo anterior"<<endl;
+//A            cout<<"\tse establece nodo anterior"<<endl;
             nuevoNodoAnterior->establecerNodoSiguiente(nuevoUltimo);            
-            cout<<"\tse estalece nodo siguiente"<<endl;
+//A            cout<<"\tse estalece nodo siguiente"<<endl;
             ultimoNodo = nuevoUltimo;
-            cout<<"\tse actualiza ultimo nodo"<<endl;           
+//A            cout<<"\tse actualiza ultimo nodo"<<endl;           
 
          /* NodoDoble<T> *nuevoNodo = new NodoDoble<T>(elemento, NULL);            
             nuevoNodo->establecerNodoAnterior(ultimoNodo);
@@ -84,7 +84,7 @@ class ListaCircular{//lista xD creo jajaja xD, BIEN YA xD
 
             ultimoNodo->establecerNodoSiguiente(primerNodo);
             primerNodo->establecerNodoAnterior(ultimoNodo);//a mi parecer debe ser así o colocar el bloque simi a este que trab con el nuevoUltimo y hacer l actualización del último hasta abajo...
-            cout<<"\tse reestablece trayectoria circular"<<endl;       
+//A            cout<<"\tse reestablece trayectoria circular"<<endl;       
 
             /*ultimoNodo = nuevoNodo;//para que así se pueda dar el seguimiento correcto a la lista... *///yo veo que no importa que esté antes de hacer las asignaciones para que siga con la trayec circular, puesto que solo estoy haciendo que en lugar de que se haga la igualación cuando ya el nuevo nodo al que se iguala el último, posee todo, se le asigna no solo a este nuevo nodo, sino tb al ultimo, de manera "simultanea"
             tamanio++;
@@ -130,7 +130,7 @@ class ListaCircular{//lista xD creo jajaja xD, BIEN YA xD
 
             //no borro al nodo Auxiliar por el hecho de que es una var local, por lo cual debería morir xD lego de terminar la exe de este método...
             tamanio--;
-            cout<<endl<<"primer nodo eliminado de la listaCircular"<<endl;
+//A            cout<<endl<<"primer nodo eliminado de la listaCircular"<<endl;
             return elementoAEliminar;
         }
         return NULL;
@@ -161,7 +161,7 @@ class ListaCircular{//lista xD creo jajaja xD, BIEN YA xD
                         //Las variables LOCALES NO se deben eliminar, pues de eso se encarga el compi de C++, eso quiere decir que si la var con la que se asginó el valor a dicha var local, cambia y la unica referencia que se tiene a lo que contenia dicha var cambiada era la var temporal, el compi de C++ se encargará de hacer el delete :) xD, por lo cual si tu haces el delete de manera manual te lanzará un error por intentar, el compi, eli algo que ya se había eli [por la linea que colocaste]                 
 
                         tamanio--;
-                        cout<<endl<<"nodo "<<nodoActual<< "eliminado de la listaCircular"<<endl;
+//A                        cout<<endl<<"nodo "<<nodoActual<< "eliminado de la listaCircular"<<endl;
                         return contenido;
                     }//Es probable que requiera de otras var, pero esto es lo que se debe hacer xD
                     nodoAuxiliar = nodoAuxiliar->obtenerElSiguiente();//para permitir la revisión xD
@@ -200,7 +200,7 @@ class ListaCircular{//lista xD creo jajaja xD, BIEN YA xD
             }*/            
                         
             tamanio--;
-            cout<<endl<<"ultimo nodo eliminado de la listaCircular"<<endl;
+//A            cout<<endl<<"ultimo nodo eliminado de la listaCircular"<<endl;
             return contenido;
         }
         return NULL;

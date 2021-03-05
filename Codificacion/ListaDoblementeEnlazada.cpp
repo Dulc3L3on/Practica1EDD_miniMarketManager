@@ -60,17 +60,17 @@ class ListaDoblementeEnlazada{//lista xD creo jajaja xD, BIEN YA xD
             primerNodo = new NodoDoble<T>(elemento, NULL);
             ultimoNodo = primerNodo;
             tamanio++;
-            cout<<"\tse aniade primer nodo"<<endl;
+//A            cout<<"\tse aniade primer nodo"<<endl;
         }else{
             NodoDoble<T> *nuevoNodoAnterior = ultimoNodo;
-            cout<<"\tse guarda ultimo nodo"<<endl;
+//A            cout<<"\tse guarda ultimo nodo"<<endl;
             NodoDoble<T> *nuevoUltimo =  new NodoDoble<T>(elemento, NULL);
             nuevoUltimo->establecerNodoAnterior(nuevoNodoAnterior);
-            cout<<"\tse establece nodo anterior"<<endl;
+//A            cout<<"\tse establece nodo anterior"<<endl;
             nuevoNodoAnterior->establecerNodoSiguiente(nuevoUltimo);            
-            cout<<"\tse estalece nodo siguiente"<<endl;
+//A            cout<<"\tse estalece nodo siguiente"<<endl;
             ultimoNodo = nuevoUltimo;
-            cout<<"\tse actualiza ultimo nodo"<<endl;                     
+//A            cout<<"\tse actualiza ultimo nodo"<<endl;                     
 
             /*NodoDoble<T> *nuevoNodoAnterior = ultimoNodo;
             cout<<"\tse guarda ultimo nodo"<<endl;
