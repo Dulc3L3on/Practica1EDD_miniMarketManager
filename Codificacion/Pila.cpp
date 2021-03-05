@@ -27,6 +27,7 @@ class Pila{
         int darCapacidad();
         int darNumeroElementosActuales();
         int estaLlena();
+        int* darElementosPila();
 };
 
     template <class T>
@@ -88,6 +89,11 @@ class Pila{
             return true;
         }
         return false;
+    }
+
+    template<class T>
+    int* Pila<T>::darElementosPila(){
+        return elementosPila;
     }
 
     template <class T>
