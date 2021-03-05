@@ -45,7 +45,8 @@ using namespace std;
                 scanf("%d", &clientesEnCadaEstacion[2]);
             }
         }
-//        asignarClientesEnCadaEstacion();
+        totalClientesCreados = (clientesEnCadaEstacion[0] +clientesEnCadaEstacion[1] + clientesEnCadaEstacion[2]);//de tal forma que al incre, se vaya acumulando el dato y por ello estén bien los ID xD
+        //asignarClientesEnCadaEstacion();
     }
 
     void Simulador::prepararCajas(void){//INSIDE "asignarClientesEnCadaEstacion"                
@@ -93,9 +94,7 @@ using namespace std;
     }
 
     bool Simulador::agregarClientes(int numeroClientes){
-        if(numeroClientes!=-1){//pues si es este valor, quiere decir que ya no quiere seguir, ni siquiera con los datos que quedaban...
-            totalClientesCreados = (clientesEnCadaEstacion[0] +clientesEnCadaEstacion[1] + clientesEnCadaEstacion[2]);
-
+        if(numeroClientes!=-1){//pues si es este valor, quiere decir que ya no quiere seguir, ni siquiera con los datos que quedaban...           
             for (int clienteActual = 0; clienteActual < numeroClientes; clienteActual++)
             {
                 cout<<endl<<"Cliente #"<<++totalClientesCreados<<" ingresa a la tienda"<<endl;//al hacer la suma así, ya no será necesario hacer el incre en la siguiente... recuerda, que la posicion del ++ [o el duplicado corresp xD, creo que tb se puede con * y /] indica si se hará antes la operación, en este caso un incremento, o se enviará el valor que tenía la variable antes de app la operación... por ello es que al colocar en el for un var++, empezará en el valor ini, pej 0 y a la sig ronda, esta var tendrá el valor dep del incremento...

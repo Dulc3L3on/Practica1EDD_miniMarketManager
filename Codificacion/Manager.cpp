@@ -86,6 +86,7 @@ using namespace std;
         for (int cajaActual = 0; cajaActual < cajas->darTamanio(); cajaActual++)
         {         
             if(!nodoAuxiliar->darContenido()->estaLibre() && nodoAuxiliar->darContenido()->darTurnosFaltantes()==0){
+                cout<<"el cliente intenta salir de la tienda"<<endl;    
                 cout<<endl<<"Cliente #"<<nodoAuxiliar->darContenido()->darCliente()->darIdentificacion()<<" sale de la tienda y devuelve carreta #"<<nodoAuxiliar->darContenido()->darCliente()->darNumeroCarretaCompras()<<endl;
                 retornarCarritoCompras(pilaCarritosCompras, nodoAuxiliar->darContenido()->darCliente()->darNumeroCarretaCompras());//puesto que al desocupar la caja, se va el cliente y el carrito xD
                 nodoAuxiliar->darContenido()->desocuparCaja();                
@@ -93,11 +94,12 @@ using namespace std;
                 nodoAuxiliar->darContenido()->decrementarTiempoRestante();
                 cout<<endl<<nodoAuxiliar->darContenido()->darTurnosFaltantes()<<" turnos faltantes para Caja#"<<nodoAuxiliar->darContenido()->darCodigo()<<endl;
             }else if(nodoAuxiliar->darContenido()->estaLibre() && !colaPagos->estaVacia()){
+                cout<<"se intenta añadir cliente a caja"<<endl;    
                 nodoAuxiliar->darContenido()->agregarCliente(colaPagos->desencolarPrimerElemento());//Se elimina al primer cliente en espera de la cola de pagos y se le asigna en una caja...
                 cout<<endl<<"Caja#"<<nodoAuxiliar->darContenido()->darCodigo()<<"recibe a Cliente "<<nodoAuxiliar->darContenido()->darCliente()->darIdentificacion()<<endl;
             }              
             nodoAuxiliar = nodoAuxiliar->obtenerElSiguiente();
-            cout<<"codigo caja siguiente"<<nodoAuxiliar->darContenido()->darCodigo();
+            //cout<<"codigo caja siguiente"<<nodoAuxiliar->darContenido()->darCodigo();//lo comento porque ya verifique que si se add las cajas y además da error cuando el siguiente es el del ultimo y se intenta acceder a su contenido xD
         }               
     }
 

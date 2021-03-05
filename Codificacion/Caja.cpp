@@ -10,6 +10,7 @@ using namespace std;
     Caja::Caja(int elId, int elTiempoServicio){
         id = elId;
         tiempoServicio = elTiempoServicio;      
+        estaDesocupada = true;
     }//puesto que cuando se asigne el tiempo, se crerpá a la caja, con el fin de reducir trabajo...
     
     void Caja::agregarCliente(Cliente *elCliente){
