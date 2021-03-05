@@ -71,8 +71,10 @@ using namespace std;
         {            
             if(clienteCreadoEnEstacion <= clientesEnCadaEstacion[1]){//para clientes en cola de pagos
                 int idCorrespondiente = clientesEnCadaEstacion[0]+clienteCreadoEnEstacion;
-                colaPago->encolar(new Cliente(idCorrespondiente));//pues así se puede lograr el id acumulado
-                colaPago->inspeccionarPrimerElemento()->recogerCarritoCompras(manager->darCarritoDeCompras(pilaCarretas));//aunque si mal no recuerdo, estos métodos de los punteros, no son utiles para asignar sino solo para dar, a pesar de que el obj que almacena, posea el setter respectivo...
+                Cliente *cliente = new Cliente(idCorrespondiente);
+                cliente->recogerCarritoCompras(manager->darCarritoDeCompras(pilaCarretas));
+                colaPago->encolar(cliente);//pues así se puede lograr el id acumulado
+                //colaPago->inspeccionarPrimerElemento()->recogerCarritoCompras();//aunque si mal no recuerdo, estos métodos de los punteros, no son utiles para asignar sino solo para dar, a pesar de que el obj que almacena, posea el setter respectivo...//NO DEBE SER ASÍ puesto que en una cola lo que se anda cambiando es el ultimo nodo y no el primero, por lo cual si haces esto, terminarás reemplazando cada vez los codigos de los carritos en lugar de asignarlos los clientes correspondientes...
                 cout<<endl<<"se encolo a "<<idCorrespondiente<<" en cola de pagos"<<endl;
             }
             if(clienteCreadoEnEstacion<= clientesEnCadaEstacion[2]){//para clientes escogiendo productos
