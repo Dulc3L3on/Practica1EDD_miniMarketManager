@@ -20,7 +20,7 @@ class Simulador{
 
         ListaCircular<Cliente> *clientesComprando;
         ListaDoblementeEnlazada<Caja> *listadoCajas;
-        Pila<int> *pilaCarretas;//Debe ser un puntero, por el hecho de que envío un arreglo de 2 pilas...
+        listaEnlazada<Pila<int>> *pilaCarretas;//Debe ser un puntero, por el hecho de que envío un arreglo de 2 pilas...
         Cola<Cliente> *colaEsperaCarretas;
         Cola<Cliente> *colaPago;               
         Manager *manager;
@@ -32,7 +32,7 @@ class Simulador{
         void prepararCajas(void);
         void solicitarClientesEnCadaEstacion(void);
         void asignarClientesEnCadaEstacion(void);
-        void simularMiniMarket();//Aquí se hace la llamada al método para solicitar el # de clientes entrantes, y los demás métodos de manager que se encarga de realizar los movimientos que sucederían al estar en la tienda...
+        void simularMiniMarket(void);//Aquí se hace la llamada al método para solicitar el # de clientes entrantes, y los demás métodos de manager que se encarga de realizar los movimientos que sucederían al estar en la tienda...
         int solicitarNumeroClientes(void);
         bool agregarClientes(int);
 

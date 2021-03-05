@@ -105,7 +105,7 @@ using namespace std;
         return false;
     }
 
-    void Simulador::simularMiniMarket(){
+    void Simulador::simularMiniMarket(void){
         solicitarDatosInmutables();        
         solicitarTiempoCajas();
         pilaCarretas = (manager->prepararCarretas(numeroCarretas));//se toma como suposicón que los clientes que se encuentran en las otras partes de la tienda, NO sobrepasan el # de carretas existentes...

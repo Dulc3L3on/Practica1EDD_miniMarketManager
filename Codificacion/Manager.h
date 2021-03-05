@@ -6,6 +6,7 @@
 #include "Pila.cpp"
 #include "ListaCircular.cpp"
 #include "ListaDoblementeEnlazada.cpp"
+#include "listaEnlazada.cpp"
 #include "Caja.h"
 #include "Cola.cpp"
 
@@ -13,16 +14,16 @@ using namespace std;
 
 class Manager{
     private:
-        Pila<int> *pilaCarretas;
-        void retornarCarritoCompras(Pila<int>*, int);//Aqui se revisa se genera el numero aleatorio entre 1 y 2 para poner a disponibilidad la carreta
+        listaEnlazada<Pila<int>> *pilaCarretas;
+        void retornarCarritoCompras(listaEnlazada<Pila<int>>*, int);//Aqui se revisa se genera el numero aleatorio entre 1 y 2 para poner a disponibilidad la carreta
 
     public:
         Manager();
-        Pila<int>* prepararCarretas(int);//no olvides que cuando quieras devolver un arreglo, lo que debes hacer es devolver su puntero, puesto que este en realidad es uno de estos :0 xD        
-        int darCarritoDeCompras(Pila<int>[]);
-        void asignarCarritoCompras(Cola<Cliente>*, Pila<int>[], ListaCircular<Cliente>*);//este es para dar las carretas a los clientes, no para colocar el # de carretas solicitadas en la pila...                     
+        listaEnlazada<Pila<int>>* prepararCarretas(int);//no olvides que cuando quieras devolver un arreglo, lo que debes hacer es devolver su puntero, puesto que este en realidad es uno de estos :0 xD        
+        int darCarritoDeCompras(listaEnlazada<Pila<int>>*);
+        void asignarCarritoCompras(Cola<Cliente>*, listaEnlazada<Pila<int>>*, ListaCircular<Cliente>*);//este es para dar las carretas a los clientes, no para colocar el # de carretas solicitadas en la pila...                     
         void enviarColaPago(ListaCircular<Cliente>*, Cola<Cliente>*);//aquí se generará la cdad aleatoria de intentos a realizar para add clientes a la cola de pago [la cual es una var global...]
-        void realizarProcesoPago(ListaDoblementeEnlazada<Caja>*, Cola<Cliente>*, Pila<int>*);//aquí se hará la revisión de si hay clientes en espera de realizar pago, para así asignarlos a la caja que se encuentre vacía al momento de revisar el listado 2blemente enlazado de cajas y tb se hace el proceso para liberación de las cajas, si es que cumple con una de las 2 condic para este proceso, es decir que aquí se usa el método para retornar el carrito de compras...        
+        void realizarProcesoPago(ListaDoblementeEnlazada<Caja>*, Cola<Cliente>*, listaEnlazada<Pila<int>>*);//aquí se hará la revisión de si hay clientes en espera de realizar pago, para así asignarlos a la caja que se encuentre vacía al momento de revisar el listado 2blemente enlazado de cajas y tb se hace el proceso para liberación de las cajas, si es que cumple con una de las 2 condic para este proceso, es decir que aquí se usa el método para retornar el carrito de compras...        
 
         int max(int, int);//es una herramienta, por eso lo puse aquí xD
 };
