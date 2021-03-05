@@ -5,7 +5,7 @@
 #include <string>
 #include <fstream>//permite escribir y leer archivos
 #include "listaEnlazada.cpp"
-#include "Cliente.cpp"
+#include "Cliente.h"
 #include "ListaCircular.cpp"
 #include "ListaDoblementeEnlazada.cpp"
 #include "Caja.h"
