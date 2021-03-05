@@ -20,6 +20,7 @@ class Cola{
         T* desencolarPrimerElemento();  
         bool estaVacia();
         int darTamanio();
+        listaEnlazada<T>* darListadoElementos();
 };
 
 //No se podrá hacer la separación de los headers y de la imple.. :c xD por lo que habí a leido...
@@ -59,6 +60,11 @@ class Cola{
         return elementosCola->darTamanio();
     }
     //puesto que las colas, en este programa, no tienen espacios "vacios" es decir que cada vez que se elimine un elemento, se reduce su tamaño, entonces no será necesario add una var para saber el tamño actual de la cola
+
+    template <class T>
+    listaEnlazada<T>* Cola<T>::darListadoElementos(){
+        return elementosCola;
+    }
 
     template <class T>
     Cola<T>::~Cola<T>(){

@@ -14,7 +14,7 @@ using namespace std;
         colaEsperaCarretas = new Cola<Cliente>();
         colaPago = new Cola<Cliente>();
         clientesEnCadaEstacion = new int[3];//1 para los que estén en caja, 2 para los que estén en cola de pagos y 3 para los que estén escogiendo productos...
-        //si mal no recuerdo, los cnstrc sin argumentos, la sobreescripción de los default, son activados por el compi C++ al nada más crear una instancia 
+        //si mal no recuerdo, los cnstrc sin argumentos, la sobreescripción de los default, son activados por el compi C++ al nada más crear una instancia         
     }
 
     void Simulador::solicitarDatosInmutables(void){//Es decir el numero de carretas [que app para cada pila] y el numero de cajas, que será útil para el método en el que solicita el tiempo de las cajas...
@@ -96,15 +96,28 @@ using namespace std;
     }
 
     bool Simulador::agregarClientes(int numeroClientes){
-        if(numeroClientes!=-1){//pues si es este valor, quiere decir que ya no quiere seguir, ni siquiera con los datos que quedaban...           
+        if(numeroClientes>-1){//pues si es este valor, quiere decir que ya no quiere seguir, ni siquiera con los datos que quedaban...           
             for (int clienteActual = 0; clienteActual < numeroClientes; clienteActual++)
             {
                 cout<<endl<<"Cliente #"<<++totalClientesCreados<<" ingresa a la tienda"<<endl;//al hacer la suma así, ya no será necesario hacer el incre en la siguiente... recuerda, que la posicion del ++ [o el duplicado corresp xD, creo que tb se puede con * y /] indica si se hará antes la operación, en este caso un incremento, o se enviará el valor que tenía la variable antes de app la operación... por ello es que al colocar en el for un var++, empezará en el valor ini, pej 0 y a la sig ronda, esta var tendrá el valor dep del incremento...
                 colaEsperaCarretas->encolar(new Cliente((totalClientesCreados)));
             }                                                                                    
             return true;//quiere decir que ingreso un número que indica que sí desea continuar xD  
-        }                                                                                             
+        }            
+        cout<<endl<<"La cantidad de clientes debe ser positiva"<<endl;                                                                                 
         return false;
+    }
+
+    int Simulador::seDeseaContinuar(){
+        int decision=0;
+        cout<<endl<<" > Qué desea hacer? [1 continuar; 0 ver representacion; -1 salir";//por pila
+        cin>>decision;
+
+        if(decision==0){
+            manejador = new ManejadorGraphviz();
+            manejador->crearArchivosDot(colaEsperaCarretas->darListadoElementos(), colaPago->darListadoElementos(), pilaCarretas, clientesComprando, listadoCajas);
+            manejador->mostrarGrafico();
+        }
     }
 
     void Simulador::simularMiniMarket(void){
@@ -116,9 +129,11 @@ using namespace std;
         solicitarClientesEnCadaEstacion();
         asignarClientesEnCadaEstacion();      
         
-        int numeroClientes = solicitarNumeroClientes();
+        int decision = seDeseaContinuar();//1 continuar, 0 generar grafico, -1 parar
+        int numeroClientes = 0;
 
-        while(numeroClientes>-1){//con el >-1 justo se hace lo que deseo, es decir que pueda ingresar cualquier numero de clientes menos aquello valores irracionales [<0...], esto porque aunque no ingresen cientes, tendría que mostrar "no entraron cleintes", "nadie comprando", "sin cola de pagos", dependiendo de que estructura que almacena los clientes esté vacía xD
+        while(decision>-1){//con el >-1 justo se hace lo que deseo, es decir que pueda ingresar cualquier numero de clientes menos aquello valores irracionales [<0...], esto porque aunque no ingresen cientes, tendría que mostrar "no entraron cleintes", "nadie comprando", "sin cola de pagos", dependiendo de que estructura que almacena los clientes esté vacía xD
+            numeroClientes = solicitarNumeroClientes();
             cout<<endl<<"\t\t- INICIO -"<<endl;
             cout<<"\t    add clientes nuevos"<<endl<<endl;
             agregarClientes(numeroClientes);
@@ -135,7 +150,7 @@ using namespace std;
             cout<<"\t    proceso de cobro"<<endl<<endl;
             manager->realizarProcesoPago(listadoCajas, colaPago, pilaCarretas);        
             cout<<endl<<"\t\t- FIN -"<<endl;
-            numeroClientes = solicitarNumeroClientes();
+            decision = seDeseaContinuar();
         }
         cout<<endl<<"\t\t\t--Vuelve pronto :3--"<<endl;
     }

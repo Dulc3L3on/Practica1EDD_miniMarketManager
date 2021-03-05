@@ -1,6 +1,5 @@
 #ifndef ESCRITOR_H
 #define ESCRITOR_H
-
 #include <cstdlib>
 #include <iostream>
 #include <string>
@@ -9,14 +8,13 @@
 #include "Cliente.cpp"
 #include "ListaCircular.cpp"
 #include "ListaDoblementeEnlazada.cpp"
-#include "Nodo.cpp"
-#include "NodoDoble.cpp"
 #include "Caja.h"
 
 using namespace std;
 
 class Escritor{
-    private:        
+    private:    
+        fstream manejadorArchivo;    
 
     public:
         Escritor();

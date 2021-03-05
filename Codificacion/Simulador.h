@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include "Manager.h"
+#include "ManejadorGraphviz.h"
 
 using namespace std;
 class Simulador{
@@ -12,7 +13,8 @@ class Simulador{
         int numeroCajas;        
         int numeroCarretas;
         int totalClientesCreados;
-        int rondaActual;
+        int rondaActual;   
+        ManejadorGraphviz *manejador;     
 
         //serán temporales, es decir se cb por cada llamada  a la función correspondiente
         int *duracionAtencion;
@@ -35,6 +37,7 @@ class Simulador{
         void simularMiniMarket(void);//Aquí se hace la llamada al método para solicitar el # de clientes entrantes, y los demás métodos de manager que se encarga de realizar los movimientos que sucederían al estar en la tienda...
         int solicitarNumeroClientes(void);
         bool agregarClientes(int);
+        int seDeseaContinuar();
 
 };
 #endif
